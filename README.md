@@ -1,7 +1,6 @@
 # 🦴 Spring Boot Skeleton
 
 Esqueleto profissional e reutilizável para projetos Spring Boot.
-Pronto para uso em qualquer empresa, com boas práticas já configuradas.
 
 ---
 
