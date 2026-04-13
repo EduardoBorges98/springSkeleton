@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Boot Skeleton — Guia Didático</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #1c1c1e; --bg2: #232325; --bg3: #2a2a2d; --bg4: #313134;
+  --b:        rgba(255,255,255,0.07); --b2: rgba(255,255,255,0.13);
+  --tx:       #e8e6df; --tx2: #9e9b93; --tx3: #5c5a55;
+  --acc:      #7b9dd4; --acc-d: rgba(123,157,212,0.13);
+  --grn:      #7db87d; --grn-d: rgba(125,184,125,0.12);
+  --amb:      #d4a96a; --amb-d: rgba(212,169,106,0.12);
+  --red:      #c47676; --red-d: rgba(196,118,118,0.12);
+  --tel:      #6ab4b4; --tel-d: rgba(106,180,180,0.12);
+  --pur:      #a98fd4; --pur-d: rgba(169,143,212,0.12);
+  --kw:#7b9dd4; --cm:#57554f; --st:#7db87d; --an:#d4a96a; --nm:#c47676; --tp:#6ab4b4;
+  --mono:'JetBrains Mono',monospace; --sans:'Literata',Georgia,serif;
+  --r:8px; --rl:12px; --rx:16px;
+}
+[data-theme="light"] {
+  --bg:#faf9f7; --bg2:#f2f1ed; --bg3:#eae9e3; --bg4:#e0dfd8;
+  --b:rgba(0,0,0,0.08); --b2:rgba(0,0,0,0.15);
+  --tx:#1e1d1a; --tx2:#5a5852; --tx3:#9a9890;
+  --acc:#2f5fa8; --acc-d:rgba(47,95,168,0.08);
+  --grn:#2e6b2e; --grn-d:rgba(46,107,46,0.08);
+  --amb:#7a4f0d; --amb-d:rgba(122,79,13,0.08);
+  --red:#8c2020; --red-d:rgba(140,32,32,0.08);
+  --tel:#1a6060; --tel-d:rgba(26,96,96,0.08);
+  --pur:#5c3498; --pur-d:rgba(92,52,152,0.08);
+  --kw:#2f5fa8; --cm:#9a9890; --st:#2e6b2e; --an:#7a4f0d; --nm:#8c2020; --tp:#1a6060;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--tx);line-height:1.7;font-size:15px;transition:background .25s,color .25s}
+
+/* ── Layout ── */
+.shell{display:flex;min-height:100vh}
+
+.sb{width:250px;flex-shrink:0;padding:0 0 40px;border-right:0.5px solid var(--b);background:var(--bg2);position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-head{padding:22px 18px 18px;border-bottom:0.5px solid var(--b)}
+.sb-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--tx);margin-bottom:2px}
+.sb-sub{font-family:var(--mono);font-size:10px;color:var(--tx3)}
+.sb-cat{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);padding:16px 18px 4px}
+.sb-a{display:flex;align-items:baseline;gap:8px;padding:6px 18px;font-family:var(--mono);font-size:11.5px;color:var(--tx2);text-decoration:none;border-left:2px solid transparent;transition:all .12s}
+.sb-a:hover{color:var(--tx);background:var(--bg3)}
+.sb-a.on{color:var(--acc);border-left-color:var(--acc);background:var(--acc-d)}
+.sb-n{font-size:10px;color:var(--tx3);min-width:20px}
+.sb-btn{display:block;margin:18px 18px 0;width:calc(100% - 36px);padding:7px 10px;border-radius:var(--r);border:0.5px solid var(--b2);background:var(--bg3);color:var(--tx2);font-family:var(--mono);font-size:10.5px;cursor:pointer;transition:all .15s;text-align:left}
+.sb-btn:hover{background:var(--bg4);color:var(--tx)}
+
+.main{flex:1;min-width:0;padding:52px 68px 120px;max-width:880px}
+
+/* ── Header ── */
+.kicker{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+h1{font-size:30px;font-weight:500;color:var(--tx);margin-bottom:12px;line-height:1.2;letter-spacing:-.01em}
+.sub{font-size:15px;color:var(--tx2);line-height:1.7;max-width:580px;margin-bottom:20px;font-style:italic}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:48px}
+.tag{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--b2);color:var(--tx3);background:var(--bg2)}
+.rule{height:0.5px;background:var(--b);margin-bottom:52px}
+
+/* ── Sections ── */
+.sec{margin-bottom:64px;scroll-margin-top:32px}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:0.5px solid var(--b)}
+.sn{font-family:var(--mono);font-size:11px;color:var(--tx3);min-width:26px}
+.sh h2{font-size:21px;font-weight:500;color:var(--tx);letter-spacing:-.01em}
+.badge{margin-left:auto;font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+.b-bl{background:var(--acc-d);color:var(--acc)}
+.b-gr{background:var(--grn-d);color:var(--grn)}
+.b-rd{background:var(--red-d);color:var(--red)}
+.b-am{background:var(--amb-d);color:var(--amb)}
+.b-tl{background:var(--tel-d);color:var(--tel)}
+.b-pu{background:var(--pur-d);color:var(--pur)}
+
+/* ── Typography ── */
+p{font-size:14.5px;color:var(--tx2);line-height:1.75;margin-bottom:16px}
+p strong{color:var(--tx);font-weight:500}
+p code,li code,td code,.step-c code,.ct code{font-family:var(--mono);font-size:12px;background:var(--bg3);color:var(--amb);padding:1px 6px;border-radius:4px;border:0.5px solid var(--b2)}
+h3{font-size:15px;font-weight:500;color:var(--tx);margin:24px 0 10px;font-family:var(--mono)}
+
+/* ── File header ── */
+.file-hdr{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg3);border:0.5px solid var(--b2);border-radius:var(--rl) var(--rl) 0 0;border-bottom:0.5px solid var(--b)}
+.file-path{font-family:var(--mono);font-size:11px;color:var(--tx2)}
+.file-path span{color:var(--tx3)}
+.file-pkg{font-family:var(--mono);font-size:10px;color:var(--tx3);margin-left:auto}
+.copy-btn{font-family:var(--mono);font-size:10px;color:var(--tx3);cursor:pointer;padding:2px 8px;border-radius:4px;border:0.5px solid var(--b2);background:transparent;transition:all .15s;flex-shrink:0}
+.copy-btn:hover{color:var(--tx);background:var(--bg4)}
+
+/* ── Code block ── */
+.cb{border:0.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bg3);border-bottom:0.5px solid var(--b)}
+.cl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+pre{padding:18px 20px;font-family:var(--mono);font-size:12.5px;color:var(--tx);line-height:1.8;overflow-x:auto;white-space:pre;background:var(--bg2);tab-size:2;margin:0}
+.kw{color:var(--kw)} .cm{color:var(--cm);font-style:italic} .st{color:var(--st)} .an{color:var(--an)} .nm{color:var(--nm)} .tp{color:var(--tp)}
+
+/* ── Annotations table ── */
+.ann-grid{display:grid;grid-template-columns:auto 1fr;gap:0;border:0.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
+.ann-row{display:contents}
+.ann-row:not(:last-child) .ann-k,.ann-row:not(:last-child) .ann-v{border-bottom:0.5px solid var(--b)}
+.ann-k{font-family:var(--mono);font-size:11.5px;padding:9px 14px;background:var(--bg3);color:var(--an);white-space:nowrap;font-weight:500}
+.ann-v{font-size:13px;padding:9px 16px;background:var(--bg2);color:var(--tx2);line-height:1.55}
+.ann-v strong{color:var(--tx);font-weight:500}
+
+/* ── Props grid ── */
+.props{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:20px}
+.prop{background:var(--bg2);border:0.5px solid var(--b2);border-radius:var(--r);padding:12px 14px}
+.prop-n{font-family:var(--mono);font-size:12px;color:var(--tel);font-weight:500;margin-bottom:4px}
+.prop-d{font-size:12.5px;color:var(--tx2);line-height:1.5}
+
+/* ── Callout ── */
+.note{padding:13px 17px;border-radius:var(--r);margin-bottom:18px;border-left:3px solid var(--acc);background:var(--acc-d)}
+.note-l{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:5px}
+.note p{margin-bottom:0;font-size:13.5px}
+.note-w{border-left-color:var(--amb);background:var(--amb-d)}
+.note-w .note-l{color:var(--amb)}
+.note-g{border-left-color:var(--grn);background:var(--grn-d)}
+.note-g .note-l{color:var(--grn)}
+.note-r{border-left-color:var(--red);background:var(--red-d)}
+.note-r .note-l{color:var(--red)}
+
+/* ── Steps ── */
+.steps{border:0.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
+.step{display:flex;align-items:stretch}
+.step:not(:last-child){border-bottom:0.5px solid var(--b)}
+.step-n{min-width:46px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--tx3);background:var(--bg2);border-right:0.5px solid var(--b);flex-shrink:0}
+.step-c{padding:12px 18px;font-size:13.5px;color:var(--tx2);line-height:1.6}
+.step-c strong{color:var(--tx);font-weight:500}
+
+/* ── Flow ── */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;padding:14px 16px;background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--b);margin-bottom:20px}
+.fb{background:var(--bg3);border:0.5px solid var(--b2);border-radius:var(--r);padding:7px 13px;font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--tx2);white-space:nowrap}
+.fb.on{background:var(--acc-d);border-color:rgba(123,157,212,.3);color:var(--acc)}
+.fb.gr{background:var(--grn-d);border-color:rgba(125,184,125,.3);color:var(--grn)}
+.fb.am{background:var(--amb-d);border-color:rgba(212,169,.25);color:var(--amb)}
+.fa{font-size:14px;color:var(--tx3);padding:0 10px}
+
+/* ── Method table ── */
+.methods{border:0.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
+.mh,.mr{display:grid;grid-template-columns:90px 190px 1fr;align-items:center}
+.mh{background:var(--bg3);border-bottom:0.5px solid var(--b);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);padding:7px 14px;gap:12px}
+.mr{padding:9px 14px;gap:12px;font-size:13px;background:var(--bg2)}
+.mr:not(:last-child){border-bottom:0.5px solid var(--b)}
+.mr:hover{background:var(--bg3)}
+.mv{font-family:var(--mono);font-size:10.5px;font-weight:500;padding:2px 7px;border-radius:4px;text-align:center;width:fit-content}
+.get{background:var(--grn-d);color:var(--grn)} .post{background:var(--amb-d);color:var(--amb)} .patch{background:var(--acc-d);color:var(--acc)} .del{background:var(--red-d);color:var(--red)} .none{background:var(--bg3);color:var(--tx3);border:0.5px solid var(--b2)}
+.mp{font-family:var(--mono);font-size:11.5px;color:var(--tx)}
+.md{font-size:12.5px;color:var(--tx2)}
+
+/* ── Divider ── */
+.divider{height:0.5px;background:var(--b);margin:28px 0}
+
+/* ── Ask row ── */
+.ask-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:52px;padding-top:20px;border-top:0.5px solid var(--b)}
+.ask-l{width:100%;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.ask-btn{font-family:var(--mono);font-size:11.5px;padding:8px 14px;border-radius:var(--r);border:0.5px solid var(--b2);background:var(--bg2);color:var(--tx2);cursor:pointer;transition:all .15s}
+.ask-btn:hover{background:var(--bg3);color:var(--tx);border-color:var(--acc)}
+
+@media(max-width:780px){.sb{display:none}.main{padding:32px 18px 80px}.props{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ── Sidebar ── -->
+<nav class="sb">
+  <div class="sb-head">
+    <div class="sb-title">spring-skeleton</div>
+    <div class="sb-sub">v1.0.0 · Java 21 · Boot 3.2</div>
+  </div>
+
+  <div class="sb-cat">Ponto de entrada</div>
+  <a class="sb-a on" href="#s-app"><span class="sb-n">—</span>SkeletonApplication</a>
+
+  <div class="sb-cat">Configurações</div>
+  <a class="sb-a" href="#s-security"><span class="sb-n">—</span>SecurityConfig</a>
+  <a class="sb-a" href="#s-jpa"><span class="sb-n">—</span>JpaConfig</a>
+  <a class="sb-a" href="#s-cache"><span class="sb-n">—</span>CacheConfig</a>
+  <a class="sb-a" href="#s-openapi"><span class="sb-n">—</span>OpenApiConfig</a>
+
+  <div class="sb-cat">Entidades</div>
+  <a class="sb-a" href="#s-base"><span class="sb-n">—</span>BaseEntity</a>
+  <a class="sb-a" href="#s-user"><span class="sb-n">—</span>User</a>
+  <a class="sb-a" href="#s-role"><span class="sb-n">—</span>Role (enum)</a>
+
+  <div class="sb-cat">Dados</div>
+  <a class="sb-a" href="#s-repo"><span class="sb-n">—</span>UserRepository</a>
+  <a class="sb-a" href="#s-mapper"><span class="sb-n">—</span>UserMapper</a>
+  <a class="sb-a" href="#s-flyway"><span class="sb-n">—</span>V1__init.sql</a>
+
+  <div class="sb-cat">Segurança JWT</div>
+  <a class="sb-a" href="#s-jwtservice"><span class="sb-n">—</span>JwtService</a>
+  <a class="sb-a" href="#s-filter"><span class="sb-n">—</span>JwtAuthFilter</a>
+  <a class="sb-a" href="#s-uds"><span class="sb-n">—</span>UserDetailsService</a>
+
+  <div class="sb-cat">Services</div>
+  <a class="sb-a" href="#s-usersvc"><span class="sb-n">—</span>UserService</a>
+  <a class="sb-a" href="#s-authsvc"><span class="sb-n">—</span>AuthService</a>
+
+  <div class="sb-cat">Controllers</div>
+  <a class="sb-a" href="#s-authctrl"><span class="sb-n">—</span>AuthController</a>
+  <a class="sb-a" href="#s-userctrl"><span class="sb-n">—</span>UserController</a>
+
+  <div class="sb-cat">DTOs</div>
+  <a class="sb-a" href="#s-dtos"><span class="sb-n">—</span>Requests &amp; Responses</a>
+  <a class="sb-a" href="#s-apiresp"><span class="sb-n">—</span>ApiResponse / PageResponse</a>
+
+  <div class="sb-cat">Exceções</div>
+  <a class="sb-a" href="#s-exceptions"><span class="sb-n">—</span>Exceções e Handler</a>
+
+  <div class="sb-cat">Testes</div>
+  <a class="sb-a" href="#s-tests"><span class="sb-n">—</span>Unitários &amp; Integração</a>
+
+  <div class="sb-cat">Configuração</div>
+  <a class="sb-a" href="#s-yml"><span class="sb-n">—</span>application.yml</a>
+
+  <button class="sb-btn" onclick="toggleTheme()" id="tbtn">&#9789; Mudar para claro</button>
+</nav>
+
+<!-- ── Main ── -->
+<main class="main">
+
+<div class="kicker">Guia didático completo</div>
+<h1>Spring Boot Skeleton<br>— todas as classes explicadas</h1>
+<p class="sub">Cada arquivo do projeto documentado com contexto, anotações, fluxo e decisões de design. Para aprender, ensinar e consultar.</p>
+<div class="tags">
+  <span class="tag">Java 21</span><span class="tag">Spring Boot 3.2</span>
+  <span class="tag">JWT</span><span class="tag">PostgreSQL</span>
+  <span class="tag">Redis</span><span class="tag">Flyway</span>
+  <span class="tag">MapStruct</span><span class="tag">Lombok</span>
+  <span class="tag">Testcontainers</span>
+</div>
+<div class="rule"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- PONTO DE ENTRADA -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-app">
+  <div class="sh"><span class="sn">01</span><h2>SkeletonApplication.java</h2><span class="badge b-bl">Ponto de entrada</span></div>
+  <p>É o arquivo principal do projeto — o <strong>ponto de entrada</strong> da aplicação. Quando você executa <code>mvn spring-boot:run</code>, o Java chama o método <code>main()</code> desta classe. O Spring Boot então varre todo o pacote em busca de componentes para registrar no contexto.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/</span>SkeletonApplication.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-app')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-app"><span class="an">@SpringBootApplication</span>   <span class="cm">// = @Configuration + @EnableAutoConfiguration + @ComponentScan</span>
+<span class="an">@EnableCaching</span>            <span class="cm">// ativa @Cacheable, @CachePut, @CacheEvict nos services</span>
+<span class="an">@EnableAsync</span>              <span class="cm">// ativa @Async para métodos que rodam em threads separadas</span>
+<span class="an">@EnableScheduling</span>         <span class="cm">// ativa @Scheduled para tarefas periódicas (cron jobs)</span>
+<span class="kw">public class</span> SkeletonApplication {
+    <span class="kw">public static void</span> main(String[] args) {
+        SpringApplication.run(SkeletonApplication.<span class="kw">class</span>, args);
+    }
+}</pre>
+  </div>
+
+  <h3>O que cada anotação faz</h3>
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">@SpringBootApplication</div><div class="ann-v">Atalho para três anotações: <code>@Configuration</code> (essa classe é fonte de beans), <code>@EnableAutoConfiguration</code> (Spring detecta e configura automaticamente o que foi adicionado — ex: se tem PostgreSQL no classpath, configura datasource), e <code>@ComponentScan</code> (varre o pacote <code>com.skeleton</code> inteiro buscando <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>).</div></div>
+    <div class="ann-row"><div class="ann-k">@EnableCaching</div><div class="ann-v">Sem isso as anotações <code>@Cacheable</code> / <code>@CachePut</code> / <code>@CacheEvict</code> no <code>UserServiceImpl</code> são <strong>ignoradas silenciosamente</strong>. Esta anotação diz ao Spring para criar um proxy em volta dos métodos anotados e interceptar as chamadas para gerenciar o cache.</div></div>
+    <div class="ann-row"><div class="ann-k">@EnableAsync</div><div class="ann-v">Permite usar <code>@Async</code> em qualquer método, fazendo ele executar em uma thread separada sem bloquear a chamada original. Útil para envio de emails, notificações, etc.</div></div>
+    <div class="ann-row"><div class="ann-k">@EnableScheduling</div><div class="ann-v">Ativa o agendador de tarefas do Spring. Com isso você pode usar <code>@Scheduled(cron = "0 0 2 * * *")</code> em qualquer bean para rodar tarefas periodicamente.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECURITY CONFIG -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-security">
+  <div class="sh"><span class="sn">02</span><h2>SecurityConfig.java</h2><span class="badge b-rd">Segurança</span></div>
+  <p>É o coração da configuração de segurança. Define <strong>quem pode acessar o quê</strong>, configura CORS, desativa CSRF (desnecessário em APIs stateless), e conecta o filtro JWT à cadeia de filtros do Spring.</p>
+
+  <div class="flow">
+    <div class="fb">Request</div><div class="fa">→</div>
+    <div class="fb on">JwtAuthFilter</div><div class="fa">→</div>
+    <div class="fb">UsernamePasswordFilter</div><div class="fa">→</div>
+    <div class="fb on">SecurityFilterChain</div><div class="fa">→</div>
+    <div class="fb">Controller</div>
+  </div>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/config/</span>SecurityConfig.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-sec')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-sec"><span class="an">@Configuration</span>
+<span class="an">@EnableWebSecurity</span>         <span class="cm">// ativa o módulo de segurança web do Spring</span>
+<span class="an">@EnableMethodSecurity</span>      <span class="cm">// ativa @PreAuthorize nos controllers</span>
+<span class="an">@RequiredArgsConstructor</span>   <span class="cm">// Lombok: gera construtor com os campos final</span>
+<span class="kw">public class</span> SecurityConfig {
+
+    <span class="kw">private final</span> JwtAuthenticationFilter jwtAuthFilter;
+    <span class="kw">private final</span> UserDetailsService userDetailsService;
+
+    <span class="an">@Value</span>(<span class="st">"${app.cors.allowed-origins}"</span>)
+    <span class="kw">private</span> String allowedOrigins; <span class="cm">// lido do .env via application.yml</span>
+
+    <span class="cm">// Rotas que não precisam de token JWT</span>
+    <span class="kw">private static final</span> String[] PUBLIC_URLS = {
+        <span class="st">"/auth/**"</span>,          <span class="cm">// login e registro</span>
+        <span class="st">"/actuator/health"</span>,   <span class="cm">// health check para kubernetes/ECS</span>
+        <span class="st">"/v3/api-docs/**"</span>,    <span class="cm">// spec OpenAPI (JSON)</span>
+        <span class="st">"/swagger-ui/**"</span>,     <span class="cm">// interface Swagger</span>
+        <span class="st">"/swagger-ui.html"</span>
+    };
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> SecurityFilterChain securityFilterChain(HttpSecurity http) <span class="kw">throws</span> Exception {
+        <span class="kw">return</span> http
+            .csrf(AbstractHttpConfigurer::disable)          <span class="cm">// CSRF não faz sentido em JWT stateless</span>
+            .cors(cors -&gt; cors.configurationSource(corsConfigurationSource()))
+            .sessionManagement(s -&gt; s
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) <span class="cm">// zero sessão HTTP</span>
+            .authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers(PUBLIC_URLS).permitAll()   <span class="cm">// rotas públicas</span>
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() <span class="cm">// preflight CORS</span>
+                .anyRequest().authenticated()               <span class="cm">// todo o resto exige JWT</span>
+            )
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.<span class="kw">class</span>) <span class="cm">// JWT roda antes do filtro padrão</span>
+            .build();
+    }
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> PasswordEncoder passwordEncoder() {
+        <span class="kw">return new</span> BCryptPasswordEncoder(); <span class="cm">// fator 12 por padrão</span>
+    }
+}</pre>
+  </div>
+
+  <h3>Anotações e beans explicados</h3>
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">@EnableMethodSecurity</div><div class="ann-v">Sem isso o <code>@PreAuthorize("hasRole('ADMIN')")</code> nos controllers é ignorado. Esta anotação instrui o Spring a criar proxies em volta dos métodos anotados para verificar permissões antes de executar.</div></div>
+    <div class="ann-row"><div class="ann-k">STATELESS</div><div class="ann-v">O Spring Security não criará nem usará sessões HTTP (<code>HttpSession</code>). Cada requisição é autenticada do zero via JWT. Isso é essencial para APIs horizontalmente escaláveis — qualquer instância valida qualquer token.</div></div>
+    <div class="ann-row"><div class="ann-k">addFilterBefore</div><div class="ann-v">Posiciona o <code>JwtAuthenticationFilter</code> <em>antes</em> do <code>UsernamePasswordAuthenticationFilter</code> na cadeia. Assim o usuário já está autenticado no SecurityContext quando os filtros posteriores rodam.</div></div>
+    <div class="ann-row"><div class="ann-k">DaoAuthenticationProvider</div><div class="ann-v">Conecta o <code>UserDetailsService</code> (que carrega o usuário do banco) ao <code>PasswordEncoder</code> (BCrypt). É este provider que o <code>AuthenticationManager</code> usa no login para verificar as credenciais.</div></div>
+  </div>
+  <div class="note note-w">
+    <div class="note-l">Por que CSRF está desabilitado?</div>
+    <p>CSRF (Cross-Site Request Forgery) só é relevante quando o servidor usa cookies de sessão. Como usamos JWT no header <code>Authorization</code>, o browser nunca envia o token automaticamente para outros sites — o ataque CSRF não é possível.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- JPA CONFIG -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-jpa">
+  <div class="sh"><span class="sn">03</span><h2>JpaConfig.java</h2><span class="badge b-gr">Dados</span></div>
+  <p>Configura a <strong>auditoria automática do JPA</strong>. Graças a esta classe, campos como <code>createdBy</code> e <code>updatedBy</code> na <code>BaseEntity</code> são preenchidos automaticamente com o email do usuário logado — sem nenhuma linha de código manual no service.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/config/</span>JpaConfig.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-jpa')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-jpa"><span class="an">@Configuration</span>
+<span class="an">@EnableJpaAuditing</span>(auditorAwareRef = <span class="st">"auditorProvider"</span>)
+<span class="cm">// ^^ diz ao Spring: "quando precisar saber quem é o auditor atual,</span>
+<span class="cm">//    usa o bean chamado auditorProvider"</span>
+<span class="kw">public class</span> JpaConfig {
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> AuditorAware&lt;String&gt; auditorProvider() {
+        <span class="cm">// AuditorAware é uma interface com um único método: getCurrentAuditor()</span>
+        <span class="cm">// Implementamos como lambda: sempre retorna o usuário autenticado</span>
+        <span class="kw">return</span> () -&gt; {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            <span class="kw">if</span> (auth == <span class="kw">null</span> || !auth.isAuthenticated()) {
+                <span class="kw">return</span> Optional.of(<span class="st">"system"</span>); <span class="cm">// chamadas sem autenticação (ex: migrations)</span>
+            }
+            <span class="kw">return</span> Optional.of(auth.getName()); <span class="cm">// retorna o email do usuário logado</span>
+        };
+    }
+}</pre>
+  </div>
+
+  <div class="note">
+    <div class="note-l">Como o fluxo funciona na prática</div>
+    <p>Quando você chama <code>userRepository.save(user)</code>, o Spring detecta que é um novo registro e chama <code>auditorProvider.getCurrentAuditor()</code> internamente. O resultado é colocado no campo <code>createdBy</code>. No próximo <code>save()</code>, o mesmo valor vai para <code>updatedBy</code>. Você nunca precisa setar esses campos manualmente.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- CACHE CONFIG -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-cache">
+  <div class="sh"><span class="sn">04</span><h2>CacheConfig.java</h2><span class="badge b-am">Performance</span></div>
+  <p>Configura o <strong>Redis como backend de cache</strong>. Define TTL padrão de 30 minutos, serialização em JSON e expõe dois beans: o <code>RedisCacheManager</code> (usado pelas anotações <code>@Cacheable</code>) e o <code>RedisTemplate</code> (para operações manuais no Redis).</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/config/</span>CacheConfig.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-cache')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-cache"><span class="an">@Configuration</span>
+<span class="kw">public class</span> CacheConfig {
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> RedisCacheManager cacheManager(RedisConnectionFactory factory) {
+        <span class="cm">// ObjectMapper configurado para incluir tipo no JSON</span>
+        <span class="cm">// (necessário para desserializar corretamente objetos genéricos)</span>
+        ObjectMapper om = <span class="kw">new</span> ObjectMapper();
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
+            ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(<span class="nm">30</span>))  <span class="cm">// expira em 30 minutos</span>
+            .disableCachingNullValues()         <span class="cm">// não salva null no cache</span>
+            .serializeKeysWith(...)             <span class="cm">// chave como String simples</span>
+            .serializeValuesWith(...);          <span class="cm">// valor como JSON</span>
+
+        <span class="kw">return</span> RedisCacheManager.builder(factory)
+            .cacheDefaults(config).build();
+    }
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) {
+        <span class="cm">// Bean para operações manuais: redisTemplate.opsForValue().set("key", val)</span>
+        RedisTemplate&lt;String, Object&gt; template = <span class="kw">new</span> RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(factory);
+        template.setKeySerializer(<span class="kw">new</span> StringRedisSerializer());
+        template.setValueSerializer(<span class="kw">new</span> GenericJackson2JsonRedisSerializer());
+        <span class="kw">return</span> template;
+    }
+}</pre>
+  </div>
+
+  <div class="props">
+    <div class="prop"><div class="prop-n">TTL 30 min</div><div class="prop-d">Após 30 minutos o Redis descarta a entrada. A próxima chamada vai ao banco e reabastece o cache.</div></div>
+    <div class="prop"><div class="prop-n">disableCachingNullValues</div><div class="prop-d">Evita salvar <code>null</code> no cache, o que poderia esconder dados que ainda não existem mas serão criados depois.</div></div>
+    <div class="prop"><div class="prop-n">DefaultTyping</div><div class="prop-d">O Jackson inclui o nome da classe no JSON salvo no Redis. Isso permite desserializar corretamente ao ler.</div></div>
+    <div class="prop"><div class="prop-n">RedisTemplate</div><div class="prop-d">Use quando precisar de operações Redis além do cache: listas, sets, pub/sub, expiração customizada, etc.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- OPENAPI CONFIG -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-openapi">
+  <div class="sh"><span class="sn">05</span><h2>OpenApiConfig.java</h2><span class="badge b-bl">Documentação</span></div>
+  <p>Configura o Swagger UI com metadados do projeto e habilita autenticação JWT na interface. Após subir o projeto, acesse <code>http://localhost:8080/api/swagger-ui.html</code>, clique em <strong>Authorize</strong> e cole o token para testar endpoints protegidos.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/config/</span>OpenApiConfig.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-oapi')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-oapi"><span class="an">@Configuration</span>
+<span class="an">@SecurityScheme</span>(          <span class="cm">// define o esquema de auth para o Swagger UI</span>
+    name = <span class="st">"bearerAuth"</span>,
+    type = SecuritySchemeType.HTTP,
+    scheme = <span class="st">"bearer"</span>,
+    bearerFormat = <span class="st">"JWT"</span>,
+    in = SecuritySchemeIn.HEADER
+)
+<span class="kw">public class</span> OpenApiConfig {
+
+    <span class="an">@Bean</span>
+    <span class="kw">public</span> OpenAPI customOpenAPI() {
+        <span class="kw">return new</span> OpenAPI()
+            .info(<span class="kw">new</span> Info()
+                .title(<span class="st">"spring-skeleton API"</span>)
+                .version(<span class="st">"v1.0.0"</span>)
+                .contact(<span class="kw">new</span> Contact().name(<span class="st">"Dev Team"</span>).email(<span class="st">"dev@empresa.com"</span>)))
+            .servers(List.of(
+                <span class="kw">new</span> Server().url(<span class="st">"http://localhost:8080/api"</span>).description(<span class="st">"Local"</span>),
+                <span class="kw">new</span> Server().url(<span class="st">"https://api.empresa.com"</span>).description(<span class="st">"Produção"</span>)
+            ));
+    }
+}</pre>
+  </div>
+  <p>Nos controllers, use <code>@Tag(name = "Users")</code> na classe e <code>@Operation(summary = "Buscar por ID")</code> nos métodos para enriquecer a documentação. Use <code>@SecurityRequirement(name = "bearerAuth")</code> na classe para marcar o controller como protegido no Swagger.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- BASE ENTITY -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-base">
+  <div class="sh"><span class="sn">06</span><h2>BaseEntity.java</h2><span class="badge b-gr">Entity</span></div>
+  <p>Classe abstrata que <strong>toda entidade do projeto herda</strong>. Ela fornece ID em UUID, campos de auditoria automática e suporte a soft delete. Usar <code>@MappedSuperclass</code> faz com que os campos sejam mapeados na tabela de cada entidade filha, sem criar uma tabela separada para BaseEntity.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/entity/</span>BaseEntity.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-base')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-base"><span class="an">@Getter</span> <span class="an">@Setter</span>
+<span class="an">@MappedSuperclass</span>                          <span class="cm">// campos mapeados nas tabelas filhas</span>
+<span class="an">@EntityListeners</span>(AuditingEntityListener.<span class="kw">class</span>) <span class="cm">// ativa o listener de auditoria do JPA</span>
+<span class="kw">public abstract class</span> BaseEntity {
+
+    <span class="an">@Id</span>
+    <span class="an">@GeneratedValue</span>(strategy = GenerationType.UUID) <span class="cm">// UUID gerado pelo banco</span>
+    <span class="an">@Column</span>(updatable = <span class="kw">false</span>, nullable = <span class="kw">false</span>)    <span class="cm">// imutável após criação</span>
+    <span class="kw">private</span> UUID id;
+
+    <span class="an">@CreatedDate</span>
+    <span class="an">@Column</span>(name = <span class="st">"created_at"</span>, nullable = <span class="kw">false</span>, updatable = <span class="kw">false</span>)
+    <span class="kw">private</span> LocalDateTime createdAt; <span class="cm">// preenchido automaticamente no INSERT</span>
+
+    <span class="an">@LastModifiedDate</span>
+    <span class="an">@Column</span>(name = <span class="st">"updated_at"</span>)
+    <span class="kw">private</span> LocalDateTime updatedAt; <span class="cm">// atualizado automaticamente no UPDATE</span>
+
+    <span class="an">@CreatedBy</span>
+    <span class="an">@Column</span>(name = <span class="st">"created_by"</span>, updatable = <span class="kw">false</span>)
+    <span class="kw">private</span> String createdBy;        <span class="cm">// preenchido pelo AuditorAware (JpaConfig)</span>
+
+    <span class="an">@LastModifiedBy</span>
+    <span class="an">@Column</span>(name = <span class="st">"updated_by"</span>)
+    <span class="kw">private</span> String updatedBy;        <span class="cm">// atualizado pelo AuditorAware</span>
+
+    <span class="an">@Column</span>(name = <span class="st">"deleted_at"</span>)
+    <span class="kw">private</span> LocalDateTime deletedAt; <span class="cm">// null = ativo | data = deletado (soft delete)</span>
+
+    <span class="kw">public boolean</span> isDeleted() { <span class="kw">return</span> deletedAt != <span class="kw">null</span>; }
+
+    <span class="kw">public void</span> softDelete() {
+        <span class="kw">this</span>.deletedAt = LocalDateTime.now(); <span class="cm">// marca como deletado SEM remover do banco</span>
+    }
+}</pre>
+  </div>
+
+  <h3>Por que UUID e não Long?</h3>
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">Long sequencial</div><div class="ann-v">IDs 1, 2, 3... expõem o tamanho do banco, permitem que atacantes adivinhem outros IDs, e criam problemas em bancos distribuídos (qual instância gera o próximo número?).</div></div>
+    <div class="ann-row"><div class="ann-k">UUID aleatório</div><div class="ann-v">Completamente imprevisível, seguro para expor em URLs públicas, gerado independentemente por qualquer instância sem coordenação. O único custo é ser maior (16 bytes vs 8 bytes).</div></div>
+    <div class="ann-row"><div class="ann-k">Soft delete</div><div class="ann-v">Nunca usamos <code>DELETE</code> SQL. Em vez disso, setamos <code>deleted_at = NOW()</code>. Isso preserva histórico, facilita auditoria, permite desfazer deleções e evita erros irreversíveis em produção. Queries filtram com <code>WHERE deleted_at IS NULL</code>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- USER ENTITY -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-user">
+  <div class="sh"><span class="sn">07</span><h2>User.java</h2><span class="badge b-gr">Entity</span></div>
+  <p>A entidade de usuário do sistema. Estende <code>BaseEntity</code> (recebe UUID, auditoria e soft delete de graça) e adiciona os campos específicos do domínio. O relacionamento com roles usa <code>@ElementCollection</code> — uma tabela separada <code>user_roles</code> — em vez de uma entidade <code>Role</code> própria, pois roles são dados simples que não precisam de ID próprio.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/entity/</span>User.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-user')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-user"><span class="an">@Entity</span>                    <span class="cm">// marca esta classe como tabela do banco</span>
+<span class="an">@Table</span>(name = <span class="st">"users"</span>)    <span class="cm">// nome explícito (evita conflito com palavra reservada "user")</span>
+<span class="an">@Getter</span> <span class="an">@Setter</span>
+<span class="an">@NoArgsConstructor</span>         <span class="cm">// construtor vazio: exigido pelo JPA</span>
+<span class="an">@AllArgsConstructor</span>        <span class="cm">// construtor com todos os campos</span>
+<span class="an">@Builder</span>                   <span class="cm">// padrão Builder: User.builder().email("...").build()</span>
+<span class="kw">public class</span> User <span class="kw">extends</span> BaseEntity {
+
+    <span class="an">@Column</span>(nullable = <span class="kw">false</span>, unique = <span class="kw">true</span>)
+    <span class="kw">private</span> String email;
+
+    <span class="an">@Column</span>(nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> String password;  <span class="cm">// SEMPRE hash BCrypt, nunca texto puro</span>
+
+    <span class="an">@Column</span>(nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> String name;
+
+    <span class="an">@Column</span>(name = <span class="st">"phone_number"</span>)
+    <span class="kw">private</span> String phoneNumber;  <span class="cm">// nullable: campo opcional</span>
+
+    <span class="an">@Column</span>(name = <span class="st">"is_active"</span>, nullable = <span class="kw">false</span>)
+    <span class="an">@Builder.Default</span>           <span class="cm">// valor padrão quando se usa o Builder</span>
+    <span class="kw">private boolean</span> active = <span class="kw">true</span>;
+
+    <span class="an">@ElementCollection</span>(fetch = FetchType.EAGER)  <span class="cm">// carrega junto com o User</span>
+    <span class="an">@CollectionTable</span>(name = <span class="st">"user_roles"</span>,        <span class="cm">// tabela separada</span>
+        joinColumns = <span class="an">@JoinColumn</span>(name = <span class="st">"user_id"</span>))
+    <span class="an">@Enumerated</span>(EnumType.STRING)                  <span class="cm">// salva "ROLE_ADMIN", não 0, 1, 2</span>
+    <span class="an">@Column</span>(name = <span class="st">"role"</span>)
+    <span class="kw">private</span> Set&lt;Role&gt; roles;
+}</pre>
+  </div>
+
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">@Builder.Default</div><div class="ann-v">Sem isso, ao usar <code>User.builder().email("a").build()</code>, o campo <code>active</code> seria <code>false</code> (valor padrão de boolean em Java). Com <code>@Builder.Default</code>, o Lombok usa o valor declarado (<code>true</code>) como padrão no Builder.</div></div>
+    <div class="ann-row"><div class="ann-k">EAGER fetch</div><div class="ann-v">As roles são carregadas junto com o usuário em toda consulta. Faz sentido aqui porque o <code>UserDetailsService</code> sempre precisa das roles para criar o <code>Authentication</code>. Se fossem dados pesados, LAZY seria melhor.</div></div>
+    <div class="ann-row"><div class="ann-k">EnumType.STRING</div><div class="ann-v">Salva o nome da role como texto (<code>"ROLE_ADMIN"</code>). A alternativa ORDINAL salva o índice (0, 1, 2) — perigoso porque adicionar/remover um valor do enum muda o índice de todos os outros.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ROLE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-role">
+  <div class="sh"><span class="sn">08</span><h2>Role.java (enum)</h2><span class="badge b-gr">Enum</span></div>
+  <p>Define os papéis de usuário do sistema. Usar enum garante que os valores são finitos e conhecidos em tempo de compilação — impossível criar uma role inválida. O prefixo <code>ROLE_</code> é uma <strong>convenção obrigatória</strong> do Spring Security: o método <code>hasRole('ADMIN')</code> internamente busca por <code>ROLE_ADMIN</code>.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/enums/</span>Role.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-role')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-role"><span class="an">@Getter</span>
+<span class="an">@RequiredArgsConstructor</span>  <span class="cm">// Lombok: gera construtor com 'description'</span>
+<span class="kw">public enum</span> Role {
+    ROLE_ADMIN(<span class="st">"Administrador"</span>),
+    ROLE_USER(<span class="st">"Usuário"</span>),
+    ROLE_MANAGER(<span class="st">"Gerente"</span>);
+
+    <span class="kw">private final</span> String description; <span class="cm">// campo extra para exibição na UI</span>
+}
+
+<span class="cm">// Como o Spring Security usa:</span>
+<span class="cm">// @PreAuthorize("hasRole('ADMIN')")   → busca ROLE_ADMIN nas authorities</span>
+<span class="cm">// @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")  → qualquer um dos dois</span>
+<span class="cm">// @PreAuthorize("hasAuthority('ROLE_ADMIN')")  → equivalente, mas explícito</span></pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- REPOSITORY -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-repo">
+  <div class="sh"><span class="sn">09</span><h2>UserRepository.java</h2><span class="badge b-gr">Repository</span></div>
+  <p>Interface que estende <code>JpaRepository</code>. O Spring Data JPA gera automaticamente a implementação em runtime — você não precisa escrever código SQL para operações básicas. Os métodos <code>find...</code> e <code>exists...</code> com nomes descritivos também são gerados automaticamente (é o <strong>query derivation</strong>). As queries com <code>@Query</code> usam JPQL — similar a SQL mas com nomes de classe/campo Java.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/repository/</span>UserRepository.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-repo')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-repo"><span class="an">@Repository</span>
+<span class="kw">public interface</span> UserRepository <span class="kw">extends</span> JpaRepository&lt;User, UUID&gt; {
+    <span class="cm">// JpaRepository já fornece: save(), findById(), findAll(),</span>
+    <span class="cm">// deleteById(), count(), existsById() e muito mais</span>
+
+    <span class="cm">// Query derivation: Spring gera SELECT * FROM users WHERE email = ?</span>
+    Optional&lt;User&gt; findByEmail(String email);
+
+    <span class="cm">// Query derivation: SELECT count(*) > 0 FROM users WHERE email = ?</span>
+    <span class="kw">boolean</span> existsByEmail(String email);
+
+    <span class="cm">// JPQL: usa nome da CLASSE (User) e do CAMPO (deletedAt), não a tabela/coluna</span>
+    <span class="an">@Query</span>(<span class="st">"""
+        SELECT u FROM User u
+        WHERE u.deletedAt IS NULL
+        AND (:search IS NULL
+             OR LOWER(u.name)  LIKE LOWER(CONCAT('%', :search, '%'))
+             OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%')))
+        """</span>)
+    Page&lt;User&gt; findAllActive(<span class="an">@Param</span>(<span class="st">"search"</span>) String search, Pageable pageable);
+    <span class="cm">// Pageable controla: página, tamanho e ordenação</span>
+    <span class="cm">// Page retorna: conteúdo + metadados (total, páginas, etc.)</span>
+
+    <span class="an">@Query</span>(<span class="st">"SELECT u FROM User u WHERE u.email = :email AND u.deletedAt IS NULL"</span>)
+    Optional&lt;User&gt; findActiveByEmail(<span class="an">@Param</span>(<span class="st">"email"</span>) String email);
+    <span class="cm">// Versão com soft delete: ignora usuários deletados</span>
+}</pre>
+  </div>
+
+  <div class="note">
+    <div class="note-l">JPQL vs SQL</div>
+    <p>JPQL opera sobre as classes Java, não sobre as tabelas. <code>u.deletedAt</code> refere-se ao campo Java, que o Hibernate traduz para a coluna <code>deleted_at</code>. Isso mantém o código agnóstico ao banco — você pode trocar PostgreSQL por MySQL sem mudar as queries.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- MAPPER -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-mapper">
+  <div class="sh"><span class="sn">10</span><h2>UserMapper.java</h2><span class="badge b-gr">Mapper</span></div>
+  <p>Interface MapStruct para converter entre Entity e DTOs. Em tempo de compilação, o MapStruct analisa os campos de origem e destino e <strong>gera código Java puro</strong> para fazer o mapeamento. O resultado é idêntico ao que você escreveria manualmente — sem reflexão, sem overhead em runtime.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/mapper/</span>UserMapper.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-mapper')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-mapper"><span class="an">@Mapper</span>(
+    componentModel = <span class="st">"spring"</span>,  <span class="cm">// MapStruct registra o impl como @Component</span>
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+    <span class="cm">// ^^ se o campo source for null, não sobrescreve o campo destino</span>
+    <span class="cm">//    fundamental para o PATCH: só atualiza o que foi enviado</span>
+)
+<span class="kw">public interface</span> UserMapper {
+
+    <span class="cm">// User → UserResponse: copia todos os campos com mesmo nome automaticamente</span>
+    UserResponse toResponse(User user);
+
+    <span class="cm">// CreateUserRequest → User: ignora campos de auditoria e id (gerados depois)</span>
+    <span class="an">@Mapping</span>(target = <span class="st">"id"</span>,        ignore = <span class="kw">true</span>)
+    <span class="an">@Mapping</span>(target = <span class="st">"createdAt"</span>, ignore = <span class="kw">true</span>)
+    <span class="an">@Mapping</span>(target = <span class="st">"updatedAt"</span>, ignore = <span class="kw">true</span>)
+    <span class="an">@Mapping</span>(target = <span class="st">"createdBy"</span>, ignore = <span class="kw">true</span>)
+    <span class="an">@Mapping</span>(target = <span class="st">"deletedAt"</span>, ignore = <span class="kw">true</span>)
+    <span class="an">@Mapping</span>(target = <span class="st">"active"</span>,    constant = <span class="st">"true"</span>) <span class="cm">// novo usuário sempre ativo</span>
+    User toEntity(CreateUserRequest request);
+
+    <span class="cm">// @MappingTarget: não cria novo objeto, ATUALIZA o existente</span>
+    <span class="cm">// Perfeito para PATCH: só os campos não-null do request são copiados</span>
+    <span class="an">@Mapping</span>(target = <span class="st">"email"</span>,    ignore = <span class="kw">true</span>) <span class="cm">// email não pode ser alterado</span>
+    <span class="an">@Mapping</span>(target = <span class="st">"password"</span>, ignore = <span class="kw">true</span>) <span class="cm">// senha tem endpoint próprio</span>
+    <span class="an">@Mapping</span>(target = <span class="st">"roles"</span>,    ignore = <span class="kw">true</span>) <span class="cm">// roles têm endpoint próprio</span>
+    <span class="kw">void</span> updateEntity(<span class="an">@MappingTarget</span> User user, UpdateUserRequest request);
+}</pre>
+  </div>
+
+  <div class="note">
+    <div class="note-l">O que o MapStruct gera em tempo de compilação</div>
+    <p>O arquivo <code>UserMapperImpl.java</code> é gerado em <code>target/generated-sources/</code> e se parece exatamente com código que você escreveria manualmente: <code>response.setId(user.getId()); response.setEmail(user.getEmail()); ...</code>. Nenhuma reflexão em runtime — é Java puro compilado.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- FLYWAY -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-flyway">
+  <div class="sh"><span class="sn">11</span><h2>V1__init.sql</h2><span class="badge b-gr">Migration</span></div>
+  <p>Primeiro arquivo de migration do Flyway. Cria o schema inicial com as tabelas <code>users</code> e <code>user_roles</code>, índices otimizados e um usuário admin padrão. O Flyway executa este arquivo uma única vez, na primeira inicialização, e registra na tabela <code>flyway_schema_history</code> que ele foi aplicado.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/resources/db/migration/</span>V1__init.sql</span>
+    <button class="copy-btn" onclick="copy(this,'c-sql')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-sql"><span class="cm">-- Extensões do PostgreSQL</span>
+<span class="kw">CREATE EXTENSION IF NOT EXISTS</span> <span class="st">"uuid-ossp"</span>;   <span class="cm">-- funções UUID</span>
+<span class="kw">CREATE EXTENSION IF NOT EXISTS</span> <span class="st">"pgcrypto"</span>;    <span class="cm">-- gen_random_uuid()</span>
+
+<span class="kw">CREATE TABLE</span> users (
+    id           UUID         <span class="kw">NOT NULL DEFAULT</span> gen_random_uuid(),
+    name         VARCHAR(<span class="nm">100</span>) <span class="kw">NOT NULL</span>,
+    email        VARCHAR(<span class="nm">255</span>) <span class="kw">NOT NULL</span>,
+    password     VARCHAR(<span class="nm">255</span>) <span class="kw">NOT NULL</span>,   <span class="cm">-- sempre hash BCrypt</span>
+    phone_number VARCHAR(<span class="nm">20</span>),
+    is_active    BOOLEAN      <span class="kw">NOT NULL DEFAULT</span> <span class="kw">TRUE</span>,
+    created_at   TIMESTAMP    <span class="kw">NOT NULL DEFAULT</span> NOW(),
+    updated_at   TIMESTAMP,
+    created_by   VARCHAR(<span class="nm">255</span>),
+    updated_by   VARCHAR(<span class="nm">255</span>),
+    deleted_at   TIMESTAMP,              <span class="cm">-- null = ativo; data = soft deleted</span>
+
+    <span class="kw">CONSTRAINT</span> pk_users      <span class="kw">PRIMARY KEY</span> (id),
+    <span class="kw">CONSTRAINT</span> uq_users_email <span class="kw">UNIQUE</span> (email)
+);
+
+<span class="cm">-- Índice parcial: só indexa registros ativos (menor e mais rápido)</span>
+<span class="kw">CREATE INDEX</span> idx_users_email <span class="kw">ON</span> users (email) <span class="kw">WHERE</span> deleted_at <span class="kw">IS NULL</span>;
+<span class="kw">CREATE INDEX</span> idx_users_active <span class="kw">ON</span> users (is_active) <span class="kw">WHERE</span> deleted_at <span class="kw">IS NULL</span>;
+<span class="kw">CREATE INDEX</span> idx_users_deleted_at <span class="kw">ON</span> users (deleted_at);
+
+<span class="kw">CREATE TABLE</span> user_roles (
+    user_id UUID        <span class="kw">NOT NULL</span>,
+    role    VARCHAR(<span class="nm">50</span>) <span class="kw">NOT NULL</span>,
+    <span class="kw">CONSTRAINT</span> pk_user_roles <span class="kw">PRIMARY KEY</span> (user_id, role),
+    <span class="kw">CONSTRAINT</span> fk_user_roles <span class="kw">FOREIGN KEY</span> (user_id)
+        <span class="kw">REFERENCES</span> users (id) <span class="kw">ON DELETE CASCADE</span>
+        <span class="cm">-- ON DELETE CASCADE: se o user for deletado fisicamente,</span>
+        <span class="cm">-- as roles dele também são removidas automaticamente</span>
+);
+
+<span class="cm">-- Seed: admin padrão (senha: Admin@123)</span>
+<span class="kw">INSERT INTO</span> users (id, name, email, password, is_active, created_by)
+<span class="kw">VALUES</span> (gen_random_uuid(), <span class="st">'Administrador'</span>, <span class="st">'admin@skeleton.com'</span>,
+    <span class="st">'$2a$12$LQv3c1yqBWVHxkd0LH...'</span>, <span class="kw">TRUE</span>, <span class="st">'system'</span>);
+
+<span class="kw">INSERT INTO</span> user_roles (user_id, role)
+<span class="kw">SELECT</span> id, <span class="st">'ROLE_ADMIN'</span> <span class="kw">FROM</span> users <span class="kw">WHERE</span> email = <span class="st">'admin@skeleton.com'</span>;</pre>
+  </div>
+
+  <div class="note note-w">
+    <div class="note-l">Nunca modifique migrations já aplicadas</div>
+    <p>O Flyway salva o checksum de cada arquivo em <code>flyway_schema_history</code>. Se você modificar um arquivo já aplicado, o Flyway detecta e <strong>recusa iniciar a aplicação</strong>. Para alterar o schema, sempre crie um novo arquivo <code>V2__descricao.sql</code>.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- JWT SERVICE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-jwtservice">
+  <div class="sh"><span class="sn">12</span><h2>JwtService.java</h2><span class="badge b-rd">Segurança</span></div>
+  <p>Responsável por <strong>criar e validar tokens JWT</strong>. Um JWT tem três partes separadas por ponto: header (algoritmo), payload (dados) e signature (prova de autenticidade). O payload não é criptografado — qualquer um pode decodificá-lo. A segurança vem da assinatura: sem a chave secreta, é impossível criar um token válido.</p>
+
+  <div class="flow">
+    <div class="fb">Email + roles</div><div class="fa">→</div>
+    <div class="fb on">buildToken()</div><div class="fa">→</div>
+    <div class="fb">Header.Payload.Signature</div><div class="fa">→</div>
+    <div class="fb gr">eyJhbGci...</div>
+  </div>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/security/service/</span>JwtService.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-jwtsvc')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-jwtsvc"><span class="an">@Slf4j</span>
+<span class="an">@Service</span>
+<span class="kw">public class</span> JwtService {
+
+    <span class="an">@Value</span>(<span class="st">"${app.security.jwt.secret}"</span>)
+    <span class="kw">private</span> String secret;           <span class="cm">// chave Base64 de 256+ bits (do .env)</span>
+
+    <span class="an">@Value</span>(<span class="st">"${app.security.jwt.expiration-ms}"</span>)
+    <span class="kw">private long</span> expirationMs;       <span class="cm">// 86400000 = 24h em ms</span>
+
+    <span class="an">@Value</span>(<span class="st">"${app.security.jwt.refresh-expiration-ms}"</span>)
+    <span class="kw">private long</span> refreshExpirationMs; <span class="cm">// 604800000 = 7 dias em ms</span>
+
+    <span class="cm">// ── Geração ──</span>
+    <span class="kw">public</span> String generateToken(UserDetails user) {
+        <span class="kw">return</span> buildToken(<span class="kw">new</span> HashMap&lt;&gt;(), user, expirationMs);
+    }
+
+    <span class="kw">public</span> String generateRefreshToken(UserDetails user) {
+        <span class="kw">return</span> buildToken(<span class="kw">new</span> HashMap&lt;&gt;(), user, refreshExpirationMs);
+    }
+
+    <span class="kw">private</span> String buildToken(Map&lt;String, Object&gt; claims, UserDetails user, <span class="kw">long</span> exp) {
+        <span class="kw">return</span> Jwts.builder()
+            .claims(claims)                              <span class="cm">// dados extras no payload</span>
+            .subject(user.getUsername())                 <span class="cm">// "sub": email do usuário</span>
+            .issuedAt(<span class="kw">new</span> Date(System.currentTimeMillis())) <span class="cm">// "iat": emitido em</span>
+            .expiration(<span class="kw">new</span> Date(System.currentTimeMillis() + exp)) <span class="cm">// "exp"</span>
+            .signWith(getSigningKey())                   <span class="cm">// assina com HMAC-SHA256</span>
+            .compact();                                  <span class="cm">// gera a string final</span>
+    }
+
+    <span class="cm">// ── Validação ──</span>
+    <span class="kw">public boolean</span> isTokenValid(String token, UserDetails user) {
+        String username = extractUsername(token);
+        <span class="kw">return</span> username.equals(user.getUsername()) &amp;&amp; !isTokenExpired(token);
+        <span class="cm">// verifica: email bate E token não expirou</span>
+    }
+
+    <span class="cm">// ── Extração ──</span>
+    <span class="kw">public</span> String extractUsername(String token) {
+        <span class="kw">return</span> extractClaim(token, Claims::getSubject); <span class="cm">// lê o campo "sub"</span>
+    }
+
+    <span class="kw">private</span> SecretKey getSigningKey() {
+        <span class="kw">return</span> Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        <span class="cm">// converte a string Base64 do .env numa chave criptográfica</span>
+    }
+}</pre>
+  </div>
+
+  <div class="note">
+    <div class="note-l">Por que dois tokens?</div>
+    <p>O <strong>access token</strong> tem vida curta (1 dia) e é enviado em toda requisição. Se vazado, expira rápido. O <strong>refresh token</strong> tem vida longa (7 dias) e é usado apenas para renovar o access token via <code>POST /auth/refresh</code>. Isso evita que o usuário precise logar novamente toda vez que o access token expira.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- JWT FILTER -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-filter">
+  <div class="sh"><span class="sn">13</span><h2>JwtAuthenticationFilter.java</h2><span class="badge b-rd">Segurança</span></div>
+  <p>Filtro que <strong>intercepta cada requisição HTTP</strong> antes de chegar ao controller. Estende <code>OncePerRequestFilter</code>, garantindo que rode exatamente uma vez por request. Se o token for válido, autentica o usuário no <code>SecurityContext</code>. Se não houver token (rotas públicas), simplesmente passa adiante.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/security/filter/</span>JwtAuthenticationFilter.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-filter')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-filter"><span class="an">@Slf4j</span>
+<span class="an">@Component</span>
+<span class="an">@RequiredArgsConstructor</span>
+<span class="kw">public class</span> JwtAuthenticationFilter <span class="kw">extends</span> OncePerRequestFilter {
+
+    <span class="kw">private final</span> JwtService jwtService;
+    <span class="kw">private final</span> UserDetailsService userDetailsService;
+
+    <span class="an">@Override</span>
+    <span class="kw">protected void</span> doFilterInternal(request, response, filterChain) {
+
+        <span class="cm">// 1. Tenta ler o header "Authorization: Bearer eyJ..."</span>
+        <span class="kw">final</span> String authHeader = request.getHeader(<span class="st">"Authorization"</span>);
+
+        <span class="cm">// 2. Sem token → passa adiante sem autenticar (rotas públicas)</span>
+        <span class="kw">if</span> (authHeader == <span class="kw">null</span> || !authHeader.startsWith(<span class="st">"Bearer "</span>)) {
+            filterChain.doFilter(request, response);
+            <span class="kw">return</span>;
+        }
+
+        <span class="kw">try</span> {
+            <span class="cm">// 3. Extrai o token (remove "Bearer " do início)</span>
+            <span class="kw">final</span> String jwt = authHeader.substring(<span class="nm">7</span>);
+
+            <span class="cm">// 4. Extrai o email do payload do token</span>
+            <span class="kw">final</span> String username = jwtService.extractUsername(jwt);
+
+            <span class="cm">// 5. Se tem email e ainda não autenticou nesta requisição</span>
+            <span class="kw">if</span> (username != <span class="kw">null</span> &amp;&amp;
+                SecurityContextHolder.getContext().getAuthentication() == <span class="kw">null</span>) {
+
+                <span class="cm">// 6. Carrega usuário do banco (com roles)</span>
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                <span class="cm">// 7. Valida assinatura e expiração</span>
+                <span class="kw">if</span> (jwtService.isTokenValid(jwt, userDetails)) {
+
+                    <span class="cm">// 8. Cria o objeto de autenticação com as authorities (roles)</span>
+                    <span class="kw">var</span> authToken = <span class="kw">new</span> UsernamePasswordAuthenticationToken(
+                        userDetails, <span class="kw">null</span>, userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(<span class="kw">new</span> WebAuthenticationDetailsSource()
+                        .buildDetails(request));
+
+                    <span class="cm">// 9. Registra no SecurityContext — a partir daqui</span>
+                    <span class="cm">//    SecurityContextHolder.getContext().getAuthentication()</span>
+                    <span class="cm">//    retorna este usuário em qualquer parte da aplicação</span>
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        } <span class="kw">catch</span> (Exception ex) {
+            log.warn(<span class="st">"JWT authentication failed: {}"</span>, ex.getMessage());
+            <span class="cm">// Não retorna 401 aqui: deixa o Spring Security decidir</span>
+            <span class="cm">// Se a rota exige autenticação, ele retornará 401/403 depois</span>
+        }
+
+        <span class="cm">// 10. Continua a cadeia de filtros independentemente</span>
+        filterChain.doFilter(request, response);
+    }
+}</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- USER DETAILS SERVICE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-uds">
+  <div class="sh"><span class="sn">14</span><h2>UserDetailsServiceImpl.java</h2><span class="badge b-rd">Segurança</span></div>
+  <p>Implementação da interface <code>UserDetailsService</code> do Spring Security. É a ponte entre o banco de dados e o sistema de autenticação. O Spring chama <code>loadUserByUsername(email)</code> sempre que precisa verificar credenciais — no login e em cada requisição autenticada (via o filtro JWT).</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/security/service/</span>UserDetailsServiceImpl.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-uds')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-uds"><span class="an">@Service</span>
+<span class="an">@RequiredArgsConstructor</span>
+<span class="kw">public class</span> UserDetailsServiceImpl <span class="kw">implements</span> UserDetailsService {
+
+    <span class="kw">private final</span> UserRepository userRepository;
+
+    <span class="an">@Override</span>
+    <span class="an">@Transactional</span>(readOnly = <span class="kw">true</span>)
+    <span class="kw">public</span> UserDetails loadUserByUsername(String email) <span class="kw">throws</span> UsernameNotFoundException {
+
+        <span class="cm">// Busca apenas usuários ativos (com soft delete respeitado)</span>
+        User user = userRepository.findActiveByEmail(email)
+            .orElseThrow(() -&gt; <span class="kw">new</span> UsernameNotFoundException(<span class="st">"User not found: "</span> + email));
+
+        <span class="cm">// Converte os Role enums em GrantedAuthority</span>
+        <span class="cm">// Spring Security usa GrantedAuthority para @PreAuthorize</span>
+        Set&lt;GrantedAuthority&gt; authorities = user.getRoles().stream()
+            .map(role -&gt; <span class="kw">new</span> SimpleGrantedAuthority(role.name())) <span class="cm">// "ROLE_ADMIN"</span>
+            .collect(Collectors.toSet());
+
+        <span class="cm">// Retorna um UserDetails (objeto do Spring, não nossa entidade User)</span>
+        <span class="kw">return</span> User.builder()          <span class="cm">// User do Spring Security, não do nosso domínio</span>
+            .username(user.getEmail())
+            .password(user.getPassword())  <span class="cm">// hash BCrypt — Spring compara internamente</span>
+            .authorities(authorities)
+            .disabled(!user.isActive())    <span class="cm">// usuário inativo não consegue logar</span>
+            .build();
+    }
+}</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- USER SERVICE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-usersvc">
+  <div class="sh"><span class="sn">15</span><h2>UserService.java + UserServiceImpl.java</h2><span class="badge b-bl">Service</span></div>
+  <p>A interface <code>UserService</code> define o <strong>contrato público</strong> — o que o service faz, sem revelar como. A implementação <code>UserServiceImpl</code> é onde a lógica de negócio realmente vive: validações, transações, cache e logging.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/service/</span>UserService.java <span style="color:var(--tx3)">— interface</span></span>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl);margin-bottom:12px">
+    <pre><span class="kw">public interface</span> UserService {
+    UserResponse create(CreateUserRequest request);
+    UserResponse findById(UUID id);
+    PageResponse&lt;UserResponse&gt; findAll(String search, Pageable pageable);
+    UserResponse update(UUID id, UpdateUserRequest request);
+    <span class="kw">void</span> delete(UUID id);
+}</pre>
+  </div>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/service/impl/</span>UserServiceImpl.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-usersvc')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-usersvc"><span class="an">@Slf4j</span>
+<span class="an">@Service</span>
+<span class="an">@RequiredArgsConstructor</span>
+<span class="an">@Transactional</span>(readOnly = <span class="kw">true</span>)  <span class="cm">// default: sem escrita (otimiza queries)</span>
+<span class="kw">public class</span> UserServiceImpl <span class="kw">implements</span> UserService {
+
+    <span class="kw">private final</span> UserRepository  userRepository;
+    <span class="kw">private final</span> UserMapper       userMapper;
+    <span class="kw">private final</span> PasswordEncoder  passwordEncoder;
+
+    <span class="an">@Override</span>
+    <span class="an">@Transactional</span>   <span class="cm">// sobrescreve readOnly=true → permite escrita + rollback</span>
+    <span class="kw">public</span> UserResponse create(CreateUserRequest request) {
+        log.info(<span class="st">"Creating user: {}"</span>, request.getEmail());
+
+        <span class="kw">if</span> (userRepository.existsByEmail(request.getEmail()))
+            <span class="kw">throw new</span> BusinessException(<span class="st">"Email already in use: "</span> + request.getEmail());
+
+        User user = userMapper.toEntity(request);                       <span class="cm">// DTO → Entity</span>
+        user.setPassword(passwordEncoder.encode(request.getPassword())); <span class="cm">// hash a senha</span>
+        User saved = userRepository.save(user);                         <span class="cm">// INSERT</span>
+        <span class="kw">return</span> userMapper.toResponse(saved);                             <span class="cm">// Entity → DTO</span>
+    }
+
+    <span class="an">@Override</span>
+    <span class="an">@Cacheable</span>(value = <span class="st">"users"</span>, key = <span class="st">"#id"</span>)
+    <span class="cm">// 1ª chamada: vai ao banco e salva no Redis com TTL 30min</span>
+    <span class="cm">// 2ª chamada com mesmo id: retorna do Redis sem tocar no banco</span>
+    <span class="kw">public</span> UserResponse findById(UUID id) {
+        <span class="kw">return</span> userMapper.toResponse(findUserById(id));
+    }
+
+    <span class="an">@Override</span>
+    <span class="an">@Transactional</span>
+    <span class="an">@CachePut</span>(value = <span class="st">"users"</span>, key = <span class="st">"#id"</span>)  <span class="cm">// atualiza o cache após salvar</span>
+    <span class="kw">public</span> UserResponse update(UUID id, UpdateUserRequest request) {
+        User user = findUserById(id);
+        userMapper.updateEntity(user, request); <span class="cm">// só atualiza campos não-null</span>
+        <span class="kw">return</span> userMapper.toResponse(userRepository.save(user));
+    }
+
+    <span class="an">@Override</span>
+    <span class="an">@Transactional</span>
+    <span class="an">@CacheEvict</span>(value = <span class="st">"users"</span>, key = <span class="st">"#id"</span>)  <span class="cm">// remove do cache</span>
+    <span class="kw">public void</span> delete(UUID id) {
+        User user = findUserById(id);
+        user.softDelete();              <span class="cm">// seta deleted_at = NOW()</span>
+        userRepository.save(user);      <span class="cm">// UPDATE (não DELETE)</span>
+    }
+
+    <span class="cm">// Método privado de suporte: busca com soft delete</span>
+    <span class="kw">private</span> User findUserById(UUID id) {
+        <span class="kw">return</span> userRepository.findById(id)
+            .filter(u -&gt; !u.isDeleted())  <span class="cm">// ignora usuários soft-deletados</span>
+            .orElseThrow(() -&gt; <span class="kw">new</span> ResourceNotFoundException(<span class="st">"User"</span>, id));
+    }
+}</pre>
+  </div>
+
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">@Transactional(readOnly)</div><div class="ann-v">O Hibernate desativa o <em>dirty checking</em> (varredura de mudanças) e o banco pode usar otimizações de leitura. Use sempre em métodos que só consultam. Sobrescreva com <code>@Transactional</code> simples nos métodos de escrita.</div></div>
+    <div class="ann-row"><div class="ann-k">@Cacheable</div><div class="ann-v">Spring gera um proxy em volta do método. Na primeira chamada, executa o método e salva o resultado no Redis com a chave composta por <code>value + key</code> (ex: <code>"users::550e8400..."</code>). Nas chamadas seguintes com o mesmo ID, retorna do Redis sem executar o método.</div></div>
+    <div class="ann-row"><div class="ann-k">@CachePut</div><div class="ann-v">Sempre executa o método E atualiza o cache com o resultado. Usado no <code>update</code> para manter o cache sincronizado com o banco.</div></div>
+    <div class="ann-row"><div class="ann-k">@CacheEvict</div><div class="ann-v">Remove a entrada do cache após a execução. Usado no <code>delete</code>: após soft-deletar, remove do Redis para que consultas futuras não retornem um usuário que deveria estar "deletado".</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- AUTH SERVICE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-authsvc">
+  <div class="sh"><span class="sn">16</span><h2>AuthService.java</h2><span class="badge b-rd">Service</span></div>
+  <p>Orquestra o fluxo de autenticação: registro, login e renovação de token. Usa o <code>AuthenticationManager</code> do Spring Security para validar credenciais no login — ele internamente chama o <code>UserDetailsService</code> e o <code>PasswordEncoder</code>.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/service/impl/</span>AuthService.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-authsvc')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-authsvc"><span class="an">@Slf4j</span> <span class="an">@Service</span> <span class="an">@RequiredArgsConstructor</span>
+<span class="kw">public class</span> AuthService {
+
+    <span class="kw">private final</span> UserRepository       userRepository;
+    <span class="kw">private final</span> UserMapper            userMapper;
+    <span class="kw">private final</span> PasswordEncoder       passwordEncoder;
+    <span class="kw">private final</span> JwtService            jwtService;
+    <span class="kw">private final</span> AuthenticationManager authenticationManager;
+    <span class="kw">private final</span> UserDetailsService    userDetailsService;
+
+    <span class="an">@Transactional</span>
+    <span class="kw">public</span> AuthResponse register(CreateUserRequest request) {
+        <span class="kw">if</span> (userRepository.existsByEmail(request.getEmail()))
+            <span class="kw">throw new</span> BusinessException(<span class="st">"Email already in use"</span>);
+
+        User user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(request.getRoles() != <span class="kw">null</span>
+            ? request.getRoles() : Set.of(Role.ROLE_USER)); <span class="cm">// padrão: ROLE_USER</span>
+
+        User saved = userRepository.save(user);
+        <span class="kw">return</span> buildAuthResponse(saved); <span class="cm">// já retorna os tokens</span>
+    }
+
+    <span class="kw">public</span> AuthResponse login(LoginRequest request) {
+        <span class="cm">// authenticationManager.authenticate() faz internamente:</span>
+        <span class="cm">// 1. loadUserByUsername(email) → busca no banco</span>
+        <span class="cm">// 2. passwordEncoder.matches(senha, hash) → compara</span>
+        <span class="cm">// Se falhar: lança BadCredentialsException → GlobalExceptionHandler → 401</span>
+        authenticationManager.authenticate(
+            <span class="kw">new</span> UsernamePasswordAuthenticationToken(
+                request.getEmail(), request.getPassword()));
+
+        User user = userRepository.findActiveByEmail(request.getEmail()).orElseThrow();
+        <span class="kw">return</span> buildAuthResponse(user);
+    }
+
+    <span class="kw">public</span> AuthResponse refresh(RefreshTokenRequest request) {
+        String username = jwtService.extractUsername(request.getRefreshToken());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        <span class="kw">if</span> (!jwtService.isTokenValid(request.getRefreshToken(), userDetails))
+            <span class="kw">throw new</span> BusinessException(<span class="st">"Token inválido"</span>, HttpStatus.UNAUTHORIZED);
+
+        User user = userRepository.findActiveByEmail(username).orElseThrow();
+        <span class="kw">return</span> buildAuthResponse(user); <span class="cm">// gera novos tokens</span>
+    }
+
+    <span class="kw">private</span> AuthResponse buildAuthResponse(User user) {
+        <span class="kw">return</span> AuthResponse.builder()
+            .accessToken(jwtService.generateToken(toUserDetails(user)))
+            .refreshToken(jwtService.generateRefreshToken(toUserDetails(user)))
+            .tokenType(<span class="st">"Bearer"</span>)
+            .expiresIn(expirationMs / <span class="nm">1000</span>)   <span class="cm">// em segundos para o cliente</span>
+            .user(userMapper.toResponse(user))
+            .build();
+    }
+}</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- CONTROLLERS -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-authctrl">
+  <div class="sh"><span class="sn">17</span><h2>AuthController.java</h2><span class="badge b-bl">Controller</span></div>
+  <p>Expõe os endpoints públicos de autenticação. Não exige token JWT — está nas rotas públicas do <code>SecurityConfig</code>. O <code>@Valid</code> aciona o Bean Validation antes de o método executar: se o DTO for inválido, o <code>GlobalExceptionHandler</code> captura e retorna 422 automaticamente.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/controller/</span>AuthController.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-authctrl')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-authctrl"><span class="an">@RestController</span>              <span class="cm">// = @Controller + @ResponseBody (resposta em JSON)</span>
+<span class="an">@RequestMapping</span>(<span class="st">"/auth"</span>)    <span class="cm">// prefixo para todos os endpoints</span>
+<span class="an">@RequiredArgsConstructor</span>
+<span class="an">@Tag</span>(name = <span class="st">"Authentication"</span>) <span class="cm">// agrupa no Swagger UI</span>
+<span class="kw">public class</span> AuthController {
+
+    <span class="kw">private final</span> AuthService authService;
+
+    <span class="an">@PostMapping</span>(<span class="st">"/register"</span>)
+    <span class="an">@Operation</span>(summary = <span class="st">"Registrar novo usuário"</span>)
+    <span class="kw">public</span> ResponseEntity&lt;AuthResponse&gt; register(
+            <span class="an">@Valid</span> <span class="an">@RequestBody</span> CreateUserRequest request) {
+        <span class="cm">// @Valid → valida o DTO antes de entrar no método</span>
+        <span class="cm">// @RequestBody → desserializa o JSON do body para o objeto</span>
+        <span class="kw">return</span> ResponseEntity.status(<span class="nm">201</span>).body(authService.register(request));
+    }
+
+    <span class="an">@PostMapping</span>(<span class="st">"/login"</span>)
+    <span class="kw">public</span> ResponseEntity&lt;AuthResponse&gt; login(
+            <span class="an">@Valid</span> <span class="an">@RequestBody</span> LoginRequest request) {
+        <span class="kw">return</span> ResponseEntity.ok(authService.login(request));
+    }
+
+    <span class="an">@PostMapping</span>(<span class="st">"/refresh"</span>)
+    <span class="kw">public</span> ResponseEntity&lt;AuthResponse&gt; refresh(
+            <span class="an">@Valid</span> <span class="an">@RequestBody</span> RefreshTokenRequest request) {
+        <span class="kw">return</span> ResponseEntity.ok(authService.refresh(request));
+    }
+}</pre>
+  </div>
+</div>
+
+<div class="sec" id="s-userctrl">
+  <div class="sh"><span class="sn">18</span><h2>UserController.java</h2><span class="badge b-bl">Controller</span></div>
+  <p>CRUD completo de usuários. Todos os endpoints exigem JWT (configurado no <code>SecurityConfig</code>). Criação e deleção exigem adicionalmente a role <code>ADMIN</code> via <code>@PreAuthorize</code>. A listagem suporta paginação e busca via query params.</p>
+
+  <div class="file-hdr">
+    <span class="file-path"><span>src/main/java/com/skeleton/controller/</span>UserController.java</span>
+    <button class="copy-btn" onclick="copy(this,'c-userctrl')">Copiar</button>
+  </div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-userctrl"><span class="an">@RestController</span>
+<span class="an">@RequestMapping</span>(<span class="st">"/v1/users"</span>)
+<span class="an">@RequiredArgsConstructor</span>
+<span class="an">@Tag</span>(name = <span class="st">"Users"</span>)
+<span class="an">@SecurityRequirement</span>(name = <span class="st">"bearerAuth"</span>) <span class="cm">// mostra cadeado no Swagger</span>
+<span class="kw">public class</span> UserController {
+
+    <span class="kw">private final</span> UserService userService;
+
+    <span class="an">@PostMapping</span>
+    <span class="an">@PreAuthorize</span>(<span class="st">"hasRole('ADMIN')"</span>)  <span class="cm">// 403 se não for ROLE_ADMIN</span>
+    <span class="kw">public</span> ResponseEntity&lt;ApiResponse&lt;UserResponse&gt;&gt; create(
+            <span class="an">@Valid</span> <span class="an">@RequestBody</span> CreateUserRequest request) {
+        <span class="kw">return</span> ResponseEntity.status(<span class="nm">201</span>)
+            .body(ApiResponse.ok(<span class="st">"User created"</span>, userService.create(request)));
+    }
+
+    <span class="an">@GetMapping</span>(<span class="st">"/{id}"</span>)
+    <span class="kw">public</span> ResponseEntity&lt;ApiResponse&lt;UserResponse&gt;&gt; findById(
+            <span class="an">@PathVariable</span> UUID id) { <span class="cm">// UUID do segmento da URL</span>
+        <span class="kw">return</span> ResponseEntity.ok(ApiResponse.ok(userService.findById(id)));
+    }
+
+    <span class="an">@GetMapping</span>
+    <span class="kw">public</span> ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;UserResponse&gt;&gt;&gt; findAll(
+            <span class="an">@RequestParam</span>(required = <span class="kw">false</span>) String search,     <span class="cm">// ?search=ana</span>
+            <span class="an">@RequestParam</span>(defaultValue = <span class="st">"0"</span>)    <span class="kw">int</span> page,
+            <span class="an">@RequestParam</span>(defaultValue = <span class="st">"20"</span>)   <span class="kw">int</span> size,
+            <span class="an">@RequestParam</span>(defaultValue = <span class="st">"createdAt"</span>) String sortBy,
+            <span class="an">@RequestParam</span>(defaultValue = <span class="st">"DESC"</span>) String sortDir) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
+        <span class="kw">return</span> ResponseEntity.ok(
+            ApiResponse.ok(userService.findAll(search, PageRequest.of(page, size, sort))));
+    }
+
+    <span class="an">@PatchMapping</span>(<span class="st">"/{id}"</span>)   <span class="cm">// PATCH = atualização parcial (vs PUT = substituição total)</span>
+    <span class="kw">public</span> ResponseEntity&lt;ApiResponse&lt;UserResponse&gt;&gt; update(
+            <span class="an">@PathVariable</span> UUID id,
+            <span class="an">@Valid</span> <span class="an">@RequestBody</span> UpdateUserRequest request) {
+        <span class="kw">return</span> ResponseEntity.ok(
+            ApiResponse.ok(<span class="st">"User updated"</span>, userService.update(id, request)));
+    }
+
+    <span class="an">@DeleteMapping</span>(<span class="st">"/{id}"</span>)
+    <span class="an">@PreAuthorize</span>(<span class="st">"hasRole('ADMIN')"</span>)
+    <span class="kw">public</span> ResponseEntity&lt;Void&gt; delete(<span class="an">@PathVariable</span> UUID id) {
+        userService.delete(id);
+        <span class="kw">return</span> ResponseEntity.noContent().build(); <span class="cm">// 204 No Content</span>
+    }
+}</pre>
+  </div>
+
+  <h3>Endpoints disponíveis</h3>
+  <div class="methods">
+    <div class="mh"><span>Método</span><span>Rota</span><span>Descrição</span></div>
+    <div class="mr"><span class="mv post">POST</span><span class="mp">/auth/register</span><span class="md">Cria conta e retorna tokens</span></div>
+    <div class="mr"><span class="mv post">POST</span><span class="mp">/auth/login</span><span class="md">Autentica e retorna tokens</span></div>
+    <div class="mr"><span class="mv post">POST</span><span class="mp">/auth/refresh</span><span class="md">Renova access token</span></div>
+    <div class="mr"><span class="mv post">POST</span><span class="mp">/v1/users</span><span class="md">Cria usuário (ADMIN)</span></div>
+    <div class="mr"><span class="mv get">GET</span><span class="mp">/v1/users/{id}</span><span class="md">Busca por ID (cache)</span></div>
+    <div class="mr"><span class="mv get">GET</span><span class="mp">/v1/users?search=&page=&size=</span><span class="md">Lista com paginação e busca</span></div>
+    <div class="mr"><span class="mv patch">PATCH</span><span class="mp">/v1/users/{id}</span><span class="md">Atualiza campos parcialmente</span></div>
+    <div class="mr"><span class="mv del">DELETE</span><span class="mp">/v1/users/{id}</span><span class="md">Soft delete (ADMIN)</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- DTOs -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-dtos">
+  <div class="sh"><span class="sn">19</span><h2>DTOs de request e response</h2><span class="badge b-tl">DTOs</span></div>
+  <p>DTOs (Data Transfer Objects) são classes simples que definem o <strong>contrato da API</strong>. Separam o que o cliente vê do que está no banco. Nunca exponha uma <code>Entity</code> diretamente: ela pode ter campos sensíveis (senha) e acoplaria a API ao schema do banco.</p>
+
+  <div class="file-hdr"><span class="file-path"><span>dto/request/</span>CreateUserRequest.java</span><button class="copy-btn" onclick="copy(this,'c-creq')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-creq"><span class="an">@Data</span>  <span class="cm">// Lombok: @Getter + @Setter + @ToString + @EqualsAndHashCode + @RequiredArgsConstructor</span>
+<span class="kw">public class</span> CreateUserRequest {
+
+    <span class="an">@NotBlank</span>(message = <span class="st">"Name is required"</span>)   <span class="cm">// não nulo E não vazio</span>
+    <span class="an">@Size</span>(min = <span class="nm">2</span>, max = <span class="nm">100</span>, message = <span class="st">"Name must be 2–100 chars"</span>)
+    <span class="kw">private</span> String name;
+
+    <span class="an">@NotBlank</span>(message = <span class="st">"Email is required"</span>)
+    <span class="an">@Email</span>(message = <span class="st">"Invalid email format"</span>)  <span class="cm">// valida formato de email</span>
+    <span class="kw">private</span> String email;
+
+    <span class="an">@NotBlank</span>(message = <span class="st">"Password is required"</span>)
+    <span class="an">@Size</span>(min = <span class="nm">8</span>, message = <span class="st">"Minimum 8 characters"</span>)
+    <span class="kw">private</span> String password;
+
+    <span class="kw">private</span> String phoneNumber;  <span class="cm">// sem validação: opcional</span>
+
+    <span class="an">@NotNull</span>(message = <span class="st">"Roles are required"</span>)
+    <span class="kw">private</span> Set&lt;Role&gt; roles;
+}</pre>
+  </div>
+
+  <div class="file-hdr" style="margin-top:12px"><span class="file-path"><span>dto/request/</span>UpdateUserRequest.java</span></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl);margin-bottom:12px">
+    <pre><span class="an">@Data</span>
+<span class="kw">public class</span> UpdateUserRequest {
+    <span class="cm">// Todos os campos são opcionais (null = não mudar)</span>
+    <span class="cm">// O MapStruct com IGNORE de nulos garante isso</span>
+    <span class="an">@Size</span>(min = <span class="nm">2</span>, max = <span class="nm">100</span>)
+    <span class="kw">private</span> String name;
+    <span class="kw">private</span> String phoneNumber;
+    <span class="kw">private</span> Boolean active;  <span class="cm">// Boolean (objeto) e não boolean (primitivo)</span>
+                              <span class="cm">// para diferenciar "não enviado" (null) de "false"</span>
+}</pre>
+  </div>
+
+  <div class="file-hdr"><span class="file-path"><span>dto/response/</span>UserResponse.java</span></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre><span class="an">@Data</span>
+<span class="kw">public class</span> UserResponse {
+    <span class="kw">private</span> UUID            id;
+    <span class="kw">private</span> String          name;
+    <span class="kw">private</span> String          email;       <span class="cm">// sem password!</span>
+    <span class="kw">private</span> String          phoneNumber;
+    <span class="kw">private boolean</span>         active;
+    <span class="kw">private</span> Set&lt;Role&gt;       roles;
+    <span class="kw">private</span> LocalDateTime   createdAt;
+    <span class="kw">private</span> LocalDateTime   updatedAt;
+    <span class="cm">// deleted_at, createdBy, updatedBy: NÃO expostos (detalhe interno)</span>
+}</pre>
+  </div>
+
+  <h3>Validações disponíveis (Bean Validation)</h3>
+  <div class="ann-grid">
+    <div class="ann-row"><div class="ann-k">@NotNull</div><div class="ann-v">Campo não pode ser null. Permite string vazia.</div></div>
+    <div class="ann-row"><div class="ann-k">@NotBlank</div><div class="ann-v">Campo não pode ser null nem string vazia/espaços. Mais restrito que @NotNull para Strings.</div></div>
+    <div class="ann-row"><div class="ann-k">@Email</div><div class="ann-v">Valida formato básico de email: precisa ter @ e domínio válido.</div></div>
+    <div class="ann-row"><div class="ann-k">@Size</div><div class="ann-v">Controla tamanho de String, Collection ou array. <code>min</code> e <code>max</code> são opcionais.</div></div>
+    <div class="ann-row"><div class="ann-k">@Min / @Max</div><div class="ann-v">Para campos numéricos. <code>@Min(0)</code> garante que um preço não seja negativo.</div></div>
+    <div class="ann-row"><div class="ann-k">@Pattern</div><div class="ann-v">Valida com regex. <code>@Pattern(regexp = "\\d{10,11}")</code> para telefone, por exemplo.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- API RESPONSE -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-apiresp">
+  <div class="sh"><span class="sn">20</span><h2>ApiResponse&lt;T&gt; e PageResponse&lt;T&gt;</h2><span class="badge b-tl">DTOs</span></div>
+  <p>Envelopes que padronizam todas as respostas da API. <code>ApiResponse&lt;T&gt;</code> garante que o cliente sempre recebe a mesma estrutura, independentemente do endpoint. <code>PageResponse&lt;T&gt;</code> encapsula os dados de paginação do Spring em um formato serializado limpo.</p>
+
+  <div class="file-hdr"><span class="file-path"><span>dto/response/</span>ApiResponse.java</span><button class="copy-btn" onclick="copy(this,'c-apiresp')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-apiresp"><span class="an">@Getter</span>
+<span class="an">@Builder</span>
+<span class="an">@JsonInclude</span>(JsonInclude.Include.NON_NULL) <span class="cm">// omite campos null no JSON</span>
+<span class="kw">public class</span> ApiResponse&lt;T&gt; {
+    <span class="kw">private final boolean</span> success;
+    <span class="kw">private final</span> String message;       <span class="cm">// null em respostas sem mensagem</span>
+    <span class="kw">private final</span> T data;               <span class="cm">// o objeto retornado (genérico)</span>
+    <span class="an">@Builder.Default</span>
+    <span class="kw">private final</span> LocalDateTime timestamp = LocalDateTime.now();
+
+    <span class="cm">// Factory methods: evitam chamar o builder diretamente nos controllers</span>
+    <span class="kw">public static</span> &lt;T&gt; ApiResponse&lt;T&gt; ok(T data) { ... }
+    <span class="kw">public static</span> &lt;T&gt; ApiResponse&lt;T&gt; ok(String message, T data) { ... }
+}
+
+<span class="cm">// Exemplo de resposta JSON:</span>
+<span class="cm">// {</span>
+<span class="cm">//   "success": true,</span>
+<span class="cm">//   "message": "User created",     ← omitido se null</span>
+<span class="cm">//   "data": { "id": "...", ... },</span>
+<span class="cm">//   "timestamp": "2024-05-18T10:30:00"</span>
+<span class="cm">// }</span></pre>
+  </div>
+
+  <div class="file-hdr" style="margin-top:12px"><span class="file-path"><span>dto/response/</span>PageResponse.java</span></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre><span class="an">@Getter</span>
+<span class="kw">public class</span> PageResponse&lt;T&gt; {
+    <span class="kw">private final</span> List&lt;T&gt; content;        <span class="cm">// os registros da página atual</span>
+    <span class="kw">private final int</span>     page;           <span class="cm">// número da página (começa em 0)</span>
+    <span class="kw">private final int</span>     size;           <span class="cm">// quantos por página</span>
+    <span class="kw">private final long</span>    totalElements;  <span class="cm">// total de registros no banco</span>
+    <span class="kw">private final int</span>     totalPages;     <span class="cm">// total de páginas</span>
+    <span class="kw">private final boolean</span> last;           <span class="cm">// é a última página?</span>
+    <span class="kw">private final boolean</span> first;          <span class="cm">// é a primeira página?</span>
+
+    <span class="kw">public static</span> &lt;T&gt; PageResponse&lt;T&gt; of(Page&lt;T&gt; page) {
+        <span class="kw">return new</span> PageResponse&lt;&gt;(page);
+        <span class="cm">// converte o Page do Spring (não serializável diretamente)</span>
+        <span class="cm">// em um POJO limpo que o Jackson consegue serializar sem problemas</span>
+    }
+}</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- EXCEPTIONS -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-exceptions">
+  <div class="sh"><span class="sn">21</span><h2>Exceções e GlobalExceptionHandler</h2><span class="badge b-rd">Exceções</span></div>
+  <p>O projeto usa <strong>exceções customizadas</strong> que carregam o status HTTP apropriado. Um único handler global (<code>@RestControllerAdvice</code>) captura tudo e retorna respostas padronizadas. Sem try/catch espalhado no código — lança a exceção, o handler resolve.</p>
+
+  <div class="file-hdr"><span class="file-path"><span>exception/</span>BusinessException.java</span></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl);margin-bottom:12px">
+    <pre><span class="an">@Getter</span>
+<span class="kw">public class</span> BusinessException <span class="kw">extends</span> RuntimeException {
+    <span class="kw">private final</span> HttpStatus status;
+
+    <span class="kw">public</span> BusinessException(String message) {
+        <span class="kw">super</span>(message);
+        <span class="kw">this</span>.status = HttpStatus.BAD_REQUEST; <span class="cm">// padrão: 400</span>
+    }
+    <span class="kw">public</span> BusinessException(String message, HttpStatus status) {
+        <span class="kw">super</span>(message);
+        <span class="kw">this</span>.status = status; <span class="cm">// status customizado: 401, 403, 409, etc.</span>
+    }
+}
+
+<span class="cm">// ResourceNotFoundException (404):</span>
+<span class="kw">public class</span> ResourceNotFoundException <span class="kw">extends</span> RuntimeException {
+    <span class="kw">public</span> ResourceNotFoundException(String resource, Object id) {
+        <span class="kw">super</span>(resource + <span class="st">" not found with id: "</span> + id);
+    }
+}</pre>
+  </div>
+
+  <div class="file-hdr"><span class="file-path"><span>exception/</span>GlobalExceptionHandler.java</span><button class="copy-btn" onclick="copy(this,'c-geh')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-geh"><span class="an">@Slf4j</span>
+<span class="an">@RestControllerAdvice</span>  <span class="cm">// intercepta exceções de todos os @RestController</span>
+<span class="kw">public class</span> GlobalExceptionHandler {
+
+    <span class="an">@ExceptionHandler</span>(BusinessException.<span class="kw">class</span>)
+    <span class="kw">public</span> ResponseEntity&lt;ErrorResponse&gt; handleBusiness(BusinessException ex, ...) {
+        log.warn(<span class="st">"Business: {}"</span>, ex.getMessage());
+        <span class="kw">return</span> ResponseEntity.status(ex.getStatus()).body(build(ex.getStatus(), ...));
+    }
+
+    <span class="an">@ExceptionHandler</span>(ResourceNotFoundException.<span class="kw">class</span>)
+    <span class="kw">public</span> ResponseEntity&lt;ErrorResponse&gt; handleNotFound(... , ...) {
+        <span class="kw">return</span> ResponseEntity.status(<span class="nm">404</span>).body(build(NOT_FOUND, ex.getMessage(), req));
+    }
+
+    <span class="cm">// Captura erros de @Valid: retorna 422 com mapa de campos</span>
+    <span class="an">@ExceptionHandler</span>(MethodArgumentNotValidException.<span class="kw">class</span>)
+    <span class="kw">public</span> ResponseEntity&lt;ErrorResponse&gt; handleValidation(... ex, ...) {
+        Map&lt;String, String&gt; fields = <span class="kw">new</span> HashMap&lt;&gt;();
+        ex.getBindingResult().getAllErrors().forEach(err -&gt; {
+            String field = ((FieldError) err).getField();
+            fields.put(field, err.getDefaultMessage()); <span class="cm">// mensagem da anotação</span>
+        });
+        ErrorResponse body = build(UNPROCESSABLE_ENTITY, <span class="st">"Validation failed"</span>, req);
+        body.setFields(fields);
+        <span class="kw">return</span> ResponseEntity.status(<span class="nm">422</span>).body(body);
+    }
+
+    <span class="cm">// 403, 401, 500...</span>
+    <span class="an">@ExceptionHandler</span>(AccessDeniedException.<span class="kw">class</span>)  <span class="cm">// → 403</span>
+    <span class="an">@ExceptionHandler</span>(BadCredentialsException.<span class="kw">class</span>) <span class="cm">// → 401</span>
+    <span class="an">@ExceptionHandler</span>(Exception.<span class="kw">class</span>)              <span class="cm">// → 500 (fallback)</span>
+}
+
+<span class="cm">// Formato de resposta de erro (ErrorResponse):</span>
+<span class="cm">// {</span>
+<span class="cm">//   "timestamp": "2024-05-18T10:30:00",</span>
+<span class="cm">//   "status":  422,</span>
+<span class="cm">//   "error":   "Unprocessable Entity",</span>
+<span class="cm">//   "message": "Validation failed",</span>
+<span class="cm">//   "path":    "/api/v1/users",</span>
+<span class="cm">//   "fields":  { "email": "Invalid email format" }  ← só em erros de validação</span>
+<span class="cm">// }</span></pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TESTS -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-tests">
+  <div class="sh"><span class="sn">22</span><h2>Testes unitários e de integração</h2><span class="badge b-gr">Testes</span></div>
+  <p>O projeto tem dois níveis de teste. <strong>Unitários</strong> com Mockito testam a lógica de cada classe isoladamente, sem subir o Spring — são rápidos (milissegundos). <strong>Integração</strong> com Testcontainers sobem um PostgreSQL real em Docker e testam o fluxo completo — são lentos mas testam o que realmente importa.</p>
+
+  <div class="file-hdr"><span class="file-path"><span>test/.../service/</span>UserServiceTest.java</span><button class="copy-btn" onclick="copy(this,'c-unit')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-unit"><span class="an">@ExtendWith</span>(MockitoExtension.<span class="kw">class</span>)  <span class="cm">// sem Spring, apenas Mockito</span>
+<span class="an">@DisplayName</span>(<span class="st">"UserService"</span>)
+<span class="kw">class</span> UserServiceTest {
+
+    <span class="an">@Mock</span> UserRepository  userRepository;  <span class="cm">// objeto falso controlado pelo teste</span>
+    <span class="an">@Mock</span> UserMapper      userMapper;
+    <span class="an">@Mock</span> PasswordEncoder passwordEncoder;
+
+    <span class="an">@InjectMocks</span>                             <span class="cm">// Mockito injeta os @Mock acima aqui</span>
+    UserServiceImpl userService;
+
+    <span class="an">@Nested</span>
+    <span class="an">@DisplayName</span>(<span class="st">"create()"</span>)
+    <span class="kw">class</span> Create {
+
+        <span class="an">@Test</span>
+        <span class="an">@DisplayName</span>(<span class="st">"deve criar usuário com sucesso"</span>)
+        <span class="kw">void</span> shouldCreateUser() {
+            <span class="cm">// Arrange: configura o que os mocks devem retornar</span>
+            when(userRepository.existsByEmail(any())).thenReturn(<span class="kw">false</span>);
+            when(userMapper.toEntity(any())).thenReturn(user);
+            when(userRepository.save(any())).thenReturn(user);
+            when(userMapper.toResponse(user)).thenReturn(userResponse);
+
+            <span class="cm">// Act: executa o método</span>
+            UserResponse result = userService.create(request);
+
+            <span class="cm">// Assert: verifica o resultado</span>
+            assertThat(result.getEmail()).isEqualTo(<span class="st">"john@example.com"</span>);
+            verify(userRepository).save(any(User.<span class="kw">class</span>)); <span class="cm">// confirma que salvou</span>
+        }
+
+        <span class="an">@Test</span>
+        <span class="an">@DisplayName</span>(<span class="st">"deve lançar exceção quando email existe"</span>)
+        <span class="kw">void</span> shouldThrowWhenEmailExists() {
+            when(userRepository.existsByEmail(any())).thenReturn(<span class="kw">true</span>);
+
+            assertThatThrownBy(() -&gt; userService.create(request))
+                .isInstanceOf(BusinessException.<span class="kw">class</span>)
+                .hasMessageContaining(<span class="st">"Email already in use"</span>);
+
+            verify(userRepository, never()).save(any()); <span class="cm">// confirma: NÃO salvou</span>
+        }
+    }
+}</pre>
+  </div>
+
+  <div class="file-hdr" style="margin-top:12px"><span class="file-path"><span>test/.../integration/</span>BaseIntegrationTest.java</span><button class="copy-btn" onclick="copy(this,'c-integ')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-integ"><span class="an">@SpringBootTest</span>(webEnvironment = WebEnvironment.RANDOM_PORT)
+<span class="an">@ActiveProfiles</span>(<span class="st">"test"</span>)    <span class="cm">// usa perfil test do application.yml</span>
+<span class="an">@Testcontainers</span>           <span class="cm">// ativa gerenciamento de containers Docker</span>
+<span class="kw">public abstract class</span> BaseIntegrationTest {
+
+    <span class="an">@Container</span>              <span class="cm">// sobe 1 container para toda a test class (reusado)</span>
+    <span class="kw">static</span> PostgreSQLContainer&lt;?&gt; postgres =
+        <span class="kw">new</span> PostgreSQLContainer&lt;&gt;(<span class="st">"postgres:16-alpine"</span>)
+            .withDatabaseName(<span class="st">"skeleton_test"</span>);
+
+    <span class="an">@DynamicPropertySource</span>  <span class="cm">// injeta URL/user/pass do container no contexto Spring</span>
+    <span class="kw">static void</span> configureProperties(DynamicPropertyRegistry registry) {
+        registry.add(<span class="st">"spring.datasource.url"</span>,      postgres::getJdbcUrl);
+        registry.add(<span class="st">"spring.datasource.username"</span>,  postgres::getUsername);
+        registry.add(<span class="st">"spring.datasource.password"</span>,  postgres::getPassword);
+        registry.add(<span class="st">"spring.flyway.enabled"</span>, () -&gt; <span class="st">"true"</span>);
+    }
+    <span class="cm">// Todos os testes que estenderem esta classe terão banco PostgreSQL real</span>
+}
+
+<span class="cm">// Exemplo de uso:</span>
+<span class="an">@AutoConfigureMockMvc</span>
+<span class="kw">class</span> AuthControllerIT <span class="kw">extends</span> BaseIntegrationTest {
+    <span class="an">@Autowired</span> MockMvc mockMvc;
+    <span class="an">@Autowired</span> ObjectMapper objectMapper;
+
+    <span class="an">@Test</span>
+    <span class="kw">void</span> shouldLoginDefaultAdmin() <span class="kw">throws</span> Exception {
+        mockMvc.perform(post(<span class="st">"/auth/login"</span>)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginReq)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(<span class="st">"$.accessToken"</span>).isNotEmpty())
+            .andExpect(jsonPath(<span class="st">"$.tokenType"</span>).value(<span class="st">"Bearer"</span>));
+    }
+}</pre>
+  </div>
+
+  <div class="props">
+    <div class="prop"><div class="prop-n">@Nested</div><div class="prop-d">Agrupa testes relacionados dentro de uma classe. Ex: todos os testes de <code>create()</code> ficam juntos, melhorando legibilidade.</div></div>
+    <div class="prop"><div class="prop-n">@DisplayName</div><div class="prop-d">Nome legível que aparece no relatório de testes. Escreva em linguagem natural: "deve lançar exceção quando email existe".</div></div>
+    <div class="prop"><div class="prop-n">verify()</div><div class="prop-d">Verifica se um método mock foi chamado, quantas vezes e com quais argumentos. <code>never()</code> verifica que NÃO foi chamado.</div></div>
+    <div class="prop"><div class="prop-n">@DynamicPropertySource</div><div class="prop-d">Injeta propriedades dinamicamente no contexto Spring após o container Docker subir. Essencial para passar a URL do banco gerada pelo Testcontainers.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- APPLICATION.YML -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec" id="s-yml">
+  <div class="sh"><span class="sn">23</span><h2>application.yml</h2><span class="badge b-pu">Configuração</span></div>
+  <p>Arquivo de configuração central em formato YAML com suporte a múltiplos perfis no mesmo arquivo (separados por <code>---</code>). Segue o princípio <strong>12-factor app</strong>: toda configuração sensível ou variável por ambiente vem de variáveis de ambiente (<code>${VAR:default}</code>).</p>
+
+  <div class="file-hdr"><span class="file-path"><span>src/main/resources/</span>application.yml</span><button class="copy-btn" onclick="copy(this,'c-yml')">Copiar</button></div>
+  <div class="cb" style="border-top:none;border-radius:0 0 var(--rl) var(--rl)">
+    <pre id="c-yml"><span class="cm"># Configuração base — vale para todos os perfis</span>
+spring:
+  application:
+    name: <span class="st">spring-skeleton</span>
+  profiles:
+    active: <span class="st">${SPRING_PROFILES_ACTIVE:local}</span>  <span class="cm"># local por padrão</span>
+
+  datasource:
+    url: <span class="st">${DB_URL:jdbc:postgresql://localhost:5432/skeleton_db}</span>
+    username: <span class="st">${DB_USER:postgres}</span>
+    password: <span class="st">${DB_PASS:postgres}</span>    <span class="cm"># NUNCA coloque senhas reais aqui</span>
+    hikari:
+      maximum-pool-size: <span class="nm">10</span>           <span class="cm"># conexões simultâneas máximas</span>
+      connection-timeout: <span class="nm">30000</span>       <span class="cm"># 30s para obter conexão do pool</span>
+
+  jpa:
+    hibernate:
+      ddl-auto: <span class="st">validate</span>             <span class="cm"># Flyway gerencia o schema; Hibernate só valida</span>
+    show-sql: <span class="kw">false</span>                   <span class="cm"># true no perfil local</span>
+
+  flyway:
+    enabled: <span class="kw">true</span>
+    locations: <span class="st">classpath:db/migration</span>
+    baseline-on-migrate: <span class="kw">true</span>        <span class="cm"># funciona em bancos com dados existentes</span>
+
+  data:
+    redis:
+      host: <span class="st">${REDIS_HOST:localhost}</span>
+      port: <span class="st">${REDIS_PORT:6379}</span>
+
+  jackson:
+    default-property-inclusion: <span class="st">non_null</span>  <span class="cm"># omite campos null no JSON</span>
+    serialization:
+      write-dates-as-timestamps: <span class="kw">false</span>    <span class="cm"># datas como ISO 8601, não timestamp</span>
+
+app:
+  security:
+    jwt:
+      secret: <span class="st">${JWT_SECRET:changeme-use-at-least-256bits}</span>
+      expiration-ms: <span class="st">${JWT_EXPIRATION:86400000}</span>        <span class="cm"># 1 dia</span>
+      refresh-expiration-ms: <span class="st">${JWT_REFRESH:604800000}</span>   <span class="cm"># 7 dias</span>
+  cors:
+    allowed-origins: <span class="st">${CORS_ORIGINS:http://localhost:3000}</span>
+
+<span class="cm">---</span>
+<span class="cm"># Perfil local: mais logs, SQL visível</span>
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    show-sql: <span class="kw">true</span>
+
+<span class="cm">---</span>
+<span class="cm"># Perfil test: H2 in-memory, sem Redis, sem Flyway</span>
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: <span class="st">jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL</span>
+    driver-class-name: <span class="st">org.h2.Driver</span>
+  jpa:
+    hibernate:
+      ddl-auto: <span class="st">create-drop</span>  <span class="cm"># recria o schema a cada teste</span>
+  flyway:
+    enabled: <span class="kw">false</span>          <span class="cm"># Testcontainers usa Flyway próprio</span>
+
+<span class="cm">---</span>
+<span class="cm"># Perfil prod: mínimo de logs, sem SQL exposto</span>
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    show-sql: <span class="kw">false</span>
+logging:
+  level:
+    root: WARN
+    com.skeleton: INFO</pre>
+  </div>
+
+  <div class="note">
+    <div class="note-l">Como as variáveis de ambiente funcionam</div>
+    <p>A sintaxe <code>${VAR:default}</code> lê a variável de ambiente <code>VAR</code>. Se ela não existir, usa o valor após os dois pontos. Em produção, você define <code>DB_URL</code>, <code>JWT_SECRET</code> etc. nas variáveis do servidor (ECS, Kubernetes, Heroku...). Localmente, crie um arquivo <code>.env</code> e use <code>-Dspring.config.import=optional:file:.env[.properties]</code> ou configure no IDE. O arquivo <code>.env</code> nunca deve ser commitado no git.</p>
+  </div>
+
+  <div class="ask-row">
+    <div class="ask-l">Continuar aprendendo</div>
+    <button class="ask-btn" onclick="sendPrompt('Como criar um novo recurso Product do zero neste skeleton, do SQL ao controller?')">Criar entidade Product completa ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('Me explica o que são proxies do Spring e como @Transactional funciona internamente')">Como @Transactional funciona por dentro? ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('Quais são as boas práticas de segurança que este projeto segue e o que poderia ser melhorado?')">Segurança: o que mais poderia melhorar? ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('Como funciona o padrão de injeção de dependência do Spring internamente com IoC container?')">Como o IoC container funciona? ↗</button>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function copy(btn, id) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 1800);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 1800);
+  });
+}
+
+function toggleTheme() {
+  const h = document.documentElement;
+  const dark = h.getAttribute('data-theme') === 'dark';
+  h.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('tbtn').textContent = dark ? '\u2609 Mudar para escuro' : '\u2789 Mudar para claro';
+}
+
+const sections = document.querySelectorAll('.sec');
+const links = document.querySelectorAll('.sb-a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.sb-a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
