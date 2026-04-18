@@ -158,6 +158,36 @@ pre{padding:18px 20px;font-family:var(--mono);font-size:12.5px;color:var(--tx);l
 .ask-btn{font-family:var(--mono);font-size:11.5px;padding:8px 14px;border-radius:var(--r);border:0.5px solid var(--b2);background:var(--bg2);color:var(--tx2);cursor:pointer;transition:all .15s}
 .ask-btn:hover{background:var(--bg3);color:var(--tx);border-color:var(--acc)}
 
+/* ── Roadmap ── */
+.roadmap{margin-bottom:64px}
+.rm-phases{display:flex;flex-direction:column;gap:0}
+.rm-phase{border:0.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;margin-bottom:16px}
+.rm-phase-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg3);border-bottom:0.5px solid var(--b);cursor:pointer;user-select:none}
+.rm-phase-hdr:hover{background:var(--bg4)}
+.rm-phase-num{font-family:var(--mono);font-size:11px;font-weight:500;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rm-phase-title{font-size:14px;font-weight:500;color:var(--tx);flex:1}
+.rm-phase-badge{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:20px}
+.rm-phase-arrow{font-family:var(--mono);font-size:12px;color:var(--tx3);transition:transform .2s}
+.rm-phase.open .rm-phase-arrow{transform:rotate(90deg)}
+.rm-phase-body{display:none;padding:0}
+.rm-phase.open .rm-phase-body{display:block}
+.rm-steps{display:flex;flex-direction:column}
+.rm-step{display:flex;align-items:stretch;border-bottom:0.5px solid var(--b)}
+.rm-step:last-child{border-bottom:none}
+.rm-step-left{display:flex;flex-direction:column;align-items:center;padding:14px 0;width:52px;flex-shrink:0;background:var(--bg2);border-right:0.5px solid var(--b)}
+.rm-step-n{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--tx3);width:24px;height:24px;border-radius:50%;border:0.5px solid var(--b2);display:flex;align-items:center;justify-content:center;background:var(--bg3)}
+.rm-step-line{width:0.5px;flex:1;background:var(--b2);margin-top:6px}
+.rm-step:last-child .rm-step-line{display:none}
+.rm-step-content{flex:1;padding:14px 18px}
+.rm-step-title{font-size:13.5px;font-weight:500;color:var(--tx);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.rm-step-file{font-family:var(--mono);font-size:10.5px;color:var(--amb);background:var(--amb-d);padding:1px 7px;border-radius:4px;font-weight:400}
+.rm-step-desc{font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:6px}
+.rm-step-why{font-size:12px;color:var(--tx3);font-style:italic}
+.rm-step-link{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10.5px;color:var(--acc);text-decoration:none;margin-top:6px;padding:2px 8px;border-radius:4px;border:0.5px solid var(--acc-d);background:var(--acc-d);transition:all .15s}
+.rm-step-link:hover{background:rgba(123,157,212,.22)}
+.rm-tip{margin:0 18px 14px;padding:10px 14px;background:var(--grn-d);border-left:3px solid var(--grn);border-radius:0;font-size:12.5px;color:var(--tx2);line-height:1.6}
+.rm-tip strong{color:var(--tx);font-weight:500}
+
 @media(max-width:780px){.sb{display:none}.main{padding:32px 18px 80px}.props{grid-template-columns:1fr}}
 </style>
 </head>
@@ -170,6 +200,9 @@ pre{padding:18px 20px;font-family:var(--mono);font-size:12.5px;color:var(--tx);l
     <div class="sb-title">spring-skeleton</div>
     <div class="sb-sub">v1.0.0 · Java 21 · Boot 3.2</div>
   </div>
+
+  <div class="sb-cat" style="color:var(--grn)">&#128506; Roteiro</div>
+  <a class="sb-a" href="#s-roadmap" style="color:var(--grn)"><span class="sb-n">&#10132;</span>Passo a passo</a>
 
   <div class="sb-cat">Ponto de entrada</div>
   <a class="sb-a on" href="#s-app"><span class="sb-n">—</span>SkeletonApplication</a>
@@ -233,6 +266,416 @@ pre{padding:18px 20px;font-family:var(--mono);font-size:12.5px;color:var(--tx);l
   <span class="tag">Testcontainers</span>
 </div>
 <div class="rule"></div>
+
+<div class="rule"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ROADMAP -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="sec roadmap" id="s-roadmap">
+  <div class="sh"><span class="sn">&#9655;</span><h2>Passo a passo — do zero ao projeto rodando</h2><span class="badge b-gr">Roteiro</span></div>
+  <p>Siga esta sequência toda vez que for criar um projeto Spring Boot do zero ou adicionar um novo recurso ao skeleton. A ordem importa — cada fase depende da anterior.</p>
+
+  <!-- FASE 1 -->
+  <div class="rm-phase open">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--acc-d);color:var(--acc);border:0.5px solid rgba(123,157,212,.3)">1</div>
+      <span class="rm-phase-title">Infraestrutura e configuração inicial</span>
+      <span class="rm-phase-badge b-bl">Setup</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">1</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o projeto no Spring Initializr <span class="rm-step-file">pom.xml</span></div>
+            <div class="rm-step-desc">Acesse <strong>start.spring.io</strong> e selecione: Java 21, Spring Boot 3.2, dependências Web, Security, Data JPA, Validation, Actuator. Baixe e abra na IDE.</div>
+            <div class="rm-step-why">Por que primeiro: o pom.xml define a fundação. Tudo mais depende das dependências aqui declaradas.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">2</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Subir a infraestrutura local <span class="rm-step-file">docker-compose.yml</span></div>
+            <div class="rm-step-desc">Execute <code>docker compose up -d</code> para subir PostgreSQL na porta 5432 e Redis na 6379. Verifique com <code>docker ps</code> que ambos estão <em>healthy</em>.</div>
+            <div class="rm-step-why">Por que antes da aplicação: sem banco e cache disponíveis, o Spring falha ao iniciar.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">3</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar variáveis de ambiente <span class="rm-step-file">.env / application.yml</span></div>
+            <div class="rm-step-desc">Copie <code>.env.example</code> para <code>.env</code> e preencha <code>JWT_SECRET</code> (gere com <code>openssl rand -base64 64</code>), <code>DB_URL</code>, <code>CORS_ORIGINS</code>. Nunca commite o <code>.env</code>.</div>
+            <div class="rm-step-why">Por que antes de rodar: o <code>application.yml</code> lê as variáveis na inicialização.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">4</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar a classe principal <span class="rm-step-file">SkeletonApplication.java</span></div>
+            <div class="rm-step-desc">Adicione <code>@EnableCaching</code>, <code>@EnableAsync</code> e <code>@EnableScheduling</code> conforme a necessidade do projeto. Estes recursos ficam desabilitados sem as anotações.</div>
+            <a class="rm-step-link" href="#s-app">Ver seção SkeletonApplication &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> execute <code>mvn spring-boot:run -Dspring-boot.run.profiles=local</code>. A aplicação deve subir sem erros na porta 8080.</div>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--grn-d);color:var(--grn);border:0.5px solid rgba(125,184,125,.3)">2</div>
+      <span class="rm-phase-title">Schema do banco e entidades</span>
+      <span class="rm-phase-badge b-gr">Dados</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">5</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Escrever a migration SQL <span class="rm-step-file">V1__init.sql</span></div>
+            <div class="rm-step-desc">Crie o arquivo em <code>src/main/resources/db/migration/</code>. Inclua todas as colunas de auditoria (<code>created_at</code>, <code>updated_at</code>, <code>created_by</code>, <code>deleted_at</code>), constraints e índices. Use <code>gen_random_uuid()</code> como padrão de ID.</div>
+            <div class="rm-step-why">Por que antes da Entity: o Flyway cria as tabelas; o Hibernate só valida. Se a tabela não existir, a aplicação falha ao iniciar com <code>ddl-auto: validate</code>.</div>
+            <a class="rm-step-link" href="#s-flyway">Ver seção Flyway &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">6</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar a BaseEntity <span class="rm-step-file">BaseEntity.java</span></div>
+            <div class="rm-step-desc">Classe abstrata com UUID, campos de auditoria automática e método <code>softDelete()</code>. Toda entidade do projeto herda esta classe — nunca duplique esses campos em cada entidade.</div>
+            <a class="rm-step-link" href="#s-base">Ver seção BaseEntity &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">7</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar os Enums de domínio <span class="rm-step-file">Role.java</span></div>
+            <div class="rm-step-desc">Defina os papéis com prefixo <code>ROLE_</code> (convenção do Spring Security). Use <code>@Enumerated(EnumType.STRING)</code> para salvar o nome, não o índice numérico.</div>
+            <a class="rm-step-link" href="#s-role">Ver seção Role &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">8</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar a Entity <span class="rm-step-file">User.java</span></div>
+            <div class="rm-step-desc">Estenda <code>BaseEntity</code>. Anote com <code>@Entity</code> e <code>@Table(name = "users")</code>. Adicione os campos específicos com <code>@Column</code>. Use <code>@Builder.Default</code> para valores padrão no Builder.</div>
+            <a class="rm-step-link" href="#s-user">Ver seção User &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">9</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar o JpaConfig <span class="rm-step-file">JpaConfig.java</span></div>
+            <div class="rm-step-desc">Implemente o <code>AuditorAware</code> que lê o email do <code>SecurityContext</code>. Sem isso, os campos <code>createdBy</code> e <code>updatedBy</code> da BaseEntity ficam sempre nulos.</div>
+            <a class="rm-step-link" href="#s-jpa">Ver seção JpaConfig &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> suba o projeto e confirme que o Flyway rodou com <code>SELECT * FROM flyway_schema_history;</code> no banco. A tabela <code>users</code> deve existir com todas as colunas.</div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--red-d);color:var(--red);border:0.5px solid rgba(196,118,118,.3)">3</div>
+      <span class="rm-phase-title">Segurança — JWT e autenticação</span>
+      <span class="rm-phase-badge b-rd">Segurança</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">10</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Implementar o JwtService <span class="rm-step-file">JwtService.java</span></div>
+            <div class="rm-step-desc">Cria e valida tokens JWT. Lê o segredo e os tempos de expiração do <code>application.yml</code> via <code>@Value</code>. Expõe métodos para gerar access token, refresh token e extrair o username.</div>
+            <a class="rm-step-link" href="#s-jwtservice">Ver seção JwtService &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">11</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Implementar o UserDetailsServiceImpl <span class="rm-step-file">UserDetailsServiceImpl.java</span></div>
+            <div class="rm-step-desc">Ponte entre o banco e o Spring Security. Carrega o usuário pelo email e converte as roles em <code>GrantedAuthority</code>. O <code>SecurityConfig</code> vai depender deste bean.</div>
+            <a class="rm-step-link" href="#s-uds">Ver seção UserDetailsService &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">12</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o JwtAuthenticationFilter <span class="rm-step-file">JwtAuthenticationFilter.java</span></div>
+            <div class="rm-step-desc">Filtro que roda em toda requisição. Lê o header <code>Authorization</code>, valida o token e injeta o usuário no <code>SecurityContext</code>. Deve ser criado antes do SecurityConfig que o referencia.</div>
+            <a class="rm-step-link" href="#s-filter">Ver seção JwtFilter &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">13</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar o SecurityConfig <span class="rm-step-file">SecurityConfig.java</span></div>
+            <div class="rm-step-desc">Define rotas públicas e protegidas, CORS, desabilita CSRF, configura sessão stateless e posiciona o filtro JWT na cadeia. Este é o último passo de segurança pois depende de todos os beans anteriores.</div>
+            <a class="rm-step-link" href="#s-security">Ver seção SecurityConfig &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> acesse <code>GET /v1/users</code> sem token — deve retornar 401. Acesse <code>GET /actuator/health</code> sem token — deve retornar 200.</div>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--amb-d);color:var(--amb);border:0.5px solid rgba(212,169,106,.3)">4</div>
+      <span class="rm-phase-title">Camada de dados — Repository e Mapper</span>
+      <span class="rm-phase-badge b-am">Dados</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">14</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar os DTOs <span class="rm-step-file">dto/request/ e dto/response/</span></div>
+            <div class="rm-step-desc">Crie <code>CreateUserRequest</code>, <code>UpdateUserRequest</code> e <code>UserResponse</code> com validações Bean Validation. Crie também <code>ApiResponse&lt;T&gt;</code> e <code>PageResponse&lt;T&gt;</code> como envelopes padrão.</div>
+            <div class="rm-step-why">Por que antes do Mapper: o MapStruct precisa das classes de origem e destino para gerar o código de mapeamento.</div>
+            <a class="rm-step-link" href="#s-dtos">Ver seção DTOs &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">15</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o UserRepository <span class="rm-step-file">UserRepository.java</span></div>
+            <div class="rm-step-desc">Interface que estende <code>JpaRepository&lt;User, UUID&gt;</code>. Adicione queries com soft delete usando JPQL (<code>WHERE u.deletedAt IS NULL</code>) e o método de listagem com busca e paginação.</div>
+            <a class="rm-step-link" href="#s-repo">Ver seção Repository &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">16</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o UserMapper <span class="rm-step-file">UserMapper.java</span></div>
+            <div class="rm-step-desc">Interface MapStruct com <code>toResponse()</code>, <code>toEntity()</code> e <code>updateEntity(@MappingTarget)</code>. Use <code>nullValuePropertyMappingStrategy = IGNORE</code> para suportar PATCH corretamente.</div>
+            <a class="rm-step-link" href="#s-mapper">Ver seção Mapper &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> compile o projeto (<code>mvn compile</code>). O MapStruct deve gerar o arquivo <code>UserMapperImpl.java</code> em <code>target/generated-sources/</code>. Se não aparecer, verifique o <code>annotationProcessorPaths</code> no pom.</div>
+    </div>
+  </div>
+
+  <!-- FASE 5 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--acc-d);color:var(--acc);border:0.5px solid rgba(123,157,212,.3)">5</div>
+      <span class="rm-phase-title">Camada de negócio — Services</span>
+      <span class="rm-phase-badge b-bl">Lógica</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">17</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar a interface UserService <span class="rm-step-file">UserService.java</span></div>
+            <div class="rm-step-desc">Defina o contrato público: <code>create</code>, <code>findById</code>, <code>findAll</code>, <code>update</code>, <code>delete</code>. A interface documenta o que o service faz sem expor como faz.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">18</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Implementar o UserServiceImpl <span class="rm-step-file">UserServiceImpl.java</span></div>
+            <div class="rm-step-desc">Adicione <code>@Transactional(readOnly = true)</code> na classe. Sobrescreva com <code>@Transactional</code> nos métodos de escrita. Use <code>@Cacheable</code>, <code>@CachePut</code> e <code>@CacheEvict</code> para cache Redis.</div>
+            <a class="rm-step-link" href="#s-usersvc">Ver seção UserService &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">19</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Implementar o AuthService <span class="rm-step-file">AuthService.java</span></div>
+            <div class="rm-step-desc">Orquestra registro, login e refresh de token. Use <code>authenticationManager.authenticate()</code> no login — ele valida credenciais automaticamente via <code>UserDetailsService</code> e BCrypt.</div>
+            <a class="rm-step-link" href="#s-authsvc">Ver seção AuthService &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">20</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar o CacheConfig <span class="rm-step-file">CacheConfig.java</span></div>
+            <div class="rm-step-desc">Configure o <code>RedisCacheManager</code> com TTL de 30 minutos e serialização JSON. Sem isso, as anotações <code>@Cacheable</code> no service não funcionam corretamente com objetos complexos.</div>
+            <a class="rm-step-link" href="#s-cache">Ver seção CacheConfig &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> escreva um teste unitário para o <code>UserServiceImpl</code> com Mockito. Se todos os mocks estão configurados e o teste passa, a camada de service está correta.</div>
+    </div>
+  </div>
+
+  <!-- FASE 6 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--tel-d);color:var(--tel);border:0.5px solid rgba(106,180,180,.3)">6</div>
+      <span class="rm-phase-title">Camada de API — Controllers e exceções</span>
+      <span class="rm-phase-badge b-tl">API</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">21</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar as exceções customizadas <span class="rm-step-file">exception/</span></div>
+            <div class="rm-step-desc">Crie <code>BusinessException</code> (com <code>HttpStatus</code>), <code>ResourceNotFoundException</code> e <code>ErrorResponse</code>. Estas classes precisam existir antes do Handler que as captura.</div>
+            <a class="rm-step-link" href="#s-exceptions">Ver seção Exceções &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">22</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o GlobalExceptionHandler <span class="rm-step-file">GlobalExceptionHandler.java</span></div>
+            <div class="rm-step-desc">Anote com <code>@RestControllerAdvice</code>. Mapeie cada tipo de exceção para um status HTTP e formato de resposta padronizado. Inclua o handler de <code>MethodArgumentNotValidException</code> para erros de <code>@Valid</code>.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">23</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o AuthController <span class="rm-step-file">AuthController.java</span></div>
+            <div class="rm-step-desc">Mapeie <code>POST /auth/register</code>, <code>POST /auth/login</code> e <code>POST /auth/refresh</code>. Use <code>@Valid</code> em todos os <code>@RequestBody</code>. Estes endpoints ficam nas rotas públicas do SecurityConfig.</div>
+            <a class="rm-step-link" href="#s-authctrl">Ver seção AuthController &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">24</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar o UserController <span class="rm-step-file">UserController.java</span></div>
+            <div class="rm-step-desc">CRUD completo com paginação. Use <code>@PreAuthorize("hasRole('ADMIN')")</code> em criação e deleção. Adicione <code>@SecurityRequirement(name = "bearerAuth")</code> para o Swagger exibir o cadeado.</div>
+            <a class="rm-step-link" href="#s-userctrl">Ver seção UserController &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">25</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Configurar o OpenApiConfig <span class="rm-step-file">OpenApiConfig.java</span></div>
+            <div class="rm-step-desc">Adicione metadados do projeto e o <code>@SecurityScheme</code> para JWT. Acesse <code>/swagger-ui.html</code> para confirmar que todos os endpoints aparecem corretamente documentados.</div>
+            <a class="rm-step-link" href="#s-openapi">Ver seção OpenApiConfig &#8594;</a>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> faça <code>POST /auth/login</code> com o admin padrão (<code>admin@skeleton.com</code> / <code>Admin@123</code>). Copie o <code>accessToken</code>, clique em <em>Authorize</em> no Swagger e teste um endpoint protegido.</div>
+    </div>
+  </div>
+
+  <!-- FASE 7 -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--grn-d);color:var(--grn);border:0.5px solid rgba(125,184,125,.3)">7</div>
+      <span class="rm-phase-title">Testes — unitários e integração</span>
+      <span class="rm-phase-badge b-gr">Qualidade</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">26</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Escrever testes unitários <span class="rm-step-file">UserServiceTest.java</span></div>
+            <div class="rm-step-desc">Use <code>@ExtendWith(MockitoExtension.class)</code>. Cubra os casos de sucesso e as exceções de cada método do service. Organize com <code>@Nested</code> por método testado. Não sobe o Spring — são rápidos.</div>
+            <a class="rm-step-link" href="#s-tests">Ver seção Testes &#8594;</a>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">27</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Criar a base de integração <span class="rm-step-file">BaseIntegrationTest.java</span></div>
+            <div class="rm-step-desc">Configure o Testcontainers com <code>PostgreSQLContainer</code> e injete a URL do banco via <code>@DynamicPropertySource</code>. Todos os testes de integração estendem esta classe.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">28</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Escrever testes de integração <span class="rm-step-file">AuthControllerIT.java</span></div>
+            <div class="rm-step-desc">Use <code>MockMvc</code> para testar o fluxo completo HTTP → filtro → controller → service → banco. Cubra os status codes esperados (200, 201, 401, 422) e a estrutura do JSON retornado.</div>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Verificação:</strong> execute <code>mvn test</code>. Unitários devem rodar em segundos. Integração pode levar 30–60s na primeira vez (Docker precisa baixar a imagem do PostgreSQL).</div>
+    </div>
+  </div>
+
+  <!-- FASE 8 — NOVO RECURSO -->
+  <div class="rm-phase">
+    <div class="rm-phase-hdr" onclick="togglePhase(this)">
+      <div class="rm-phase-num" style="background:var(--pur-d);color:var(--pur);border:0.5px solid rgba(169,143,212,.3)">+</div>
+      <span class="rm-phase-title">Adicionar um novo recurso (ex: Product)</span>
+      <span class="rm-phase-badge b-pu">Extensão</span>
+      <span class="rm-phase-arrow">&#9654;</span>
+    </div>
+    <div class="rm-phase-body">
+      <div class="rm-steps">
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">A</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Migration <span class="rm-step-file">V2__create_products.sql</span></div>
+            <div class="rm-step-desc">Crie o arquivo com o próximo número de versão. Inclua as colunas de auditoria e soft delete. Nunca reutilize um número já existente.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">B</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Entity <span class="rm-step-file">Product.java</span></div>
+            <div class="rm-step-desc">Estenda <code>BaseEntity</code>. Adicione <code>@Entity</code>, <code>@Table</code> e os campos do domínio com <code>@Column</code>.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">C</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">DTOs <span class="rm-step-file">CreateProductRequest / ProductResponse</span></div>
+            <div class="rm-step-desc">Crie os DTOs de request com validações e o response sem campos internos.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">D</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Repository <span class="rm-step-file">ProductRepository.java</span></div>
+            <div class="rm-step-desc">Interface com <code>JpaRepository&lt;Product, UUID&gt;</code> e queries de soft delete.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">E</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Mapper <span class="rm-step-file">ProductMapper.java</span></div>
+            <div class="rm-step-desc">Interface MapStruct com os três métodos padrão: <code>toResponse</code>, <code>toEntity</code>, <code>updateEntity</code>.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">F</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Service <span class="rm-step-file">ProductService + ProductServiceImpl</span></div>
+            <div class="rm-step-desc">Interface + implementação com <code>@Transactional(readOnly = true)</code>, cache e lógica de negócio.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">G</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Controller <span class="rm-step-file">ProductController.java</span></div>
+            <div class="rm-step-desc">CRUD completo com <code>@Valid</code>, <code>@PreAuthorize</code> onde necessário e <code>@SecurityRequirement</code> para o Swagger.</div>
+          </div>
+        </div>
+        <div class="rm-step">
+          <div class="rm-step-left"><div class="rm-step-n">H</div><div class="rm-step-line"></div></div>
+          <div class="rm-step-content">
+            <div class="rm-step-title">Testes <span class="rm-step-file">ProductServiceTest + ProductControllerIT</span></div>
+            <div class="rm-step-desc">Unitários com Mockito e integração com Testcontainers. Use o <code>UserServiceTest</code> e <code>AuthControllerIT</code> como modelo.</div>
+          </div>
+        </div>
+      </div>
+      <div class="rm-tip"><strong>Dica de ouro:</strong> use o <code>User</code> como template. Copie cada arquivo, renomeie de <em>User</em> para <em>Product</em> e ajuste apenas os campos específicos. A estrutura é idêntica.</div>
+    </div>
+  </div>
+
+</div>
 
 <!-- ══════════════════════════════════════════════ -->
 <!-- PONTO DE ENTRADA -->
@@ -1690,6 +2133,11 @@ logging:
 </div>
 
 <script>
+function togglePhase(hdr) {
+  const phase = hdr.parentElement;
+  phase.classList.toggle('open');
+}
+
 function copy(btn, id) {
   const text = document.getElementById(id).innerText;
   navigator.clipboard.writeText(text).then(() => {
